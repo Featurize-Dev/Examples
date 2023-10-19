@@ -1,5 +1,5 @@
 ﻿using Featurize.AspNetCore;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Featurize.Todo.Features.OpenApi.Filters;
 using Microsoft.OpenApi.Models;
 
 namespace Featurize.Todo.Features.OpenApi;
@@ -17,7 +17,10 @@ public class OpenApiFeature : IWebApplicationFeature
                 Version = "v1",
                 Description = "Api's for a Todo app",
                 Contact = new OpenApiContact
-                { Name = "Featurize", Url = new Uri("https://www.featurize-dev.io/") },
+                { 
+                    Name = "Featurize", 
+                    Url = new Uri("https://www.featurize-dev.io/") 
+                },
                 License = new OpenApiLicense()
                 {
                     Name = "MIT",
@@ -25,26 +28,10 @@ public class OpenApiFeature : IWebApplicationFeature
                 }
             };
 
-            OpenApiSecurityScheme securityDefinition = new()
-            {
-                Name = "Bearer",
-                BearerFormat = "JWT",
-                Scheme = JwtBearerDefaults.AuthenticationScheme,
-                Description = "Specify the authorization token.",
-                In = ParameterLocation.Header,
-                Type = SecuritySchemeType.OpenIdConnect,
-                OpenIdConnectUrl = new Uri("https://localhost:5001/.well-known/openid-configuration")
-            };
-
-            //var authority = "https://localhost:5001/";
-
+            options.SchemaFilter<EnumSchemaFilter>();
+            options.MapValueObjects();
+            
             options.SwaggerDoc("v1", apiinfo);
-            options.AddSecurityDefinition("bearer", securityDefinition);
-            // Make sure swagger UI requires a Bearer token to be specified
-            options.AddSecurityRequirement(new OpenApiSecurityRequirement()
-                {
-                    { securityDefinition, Array.Empty<string>() }
-                });
         });
     }
 

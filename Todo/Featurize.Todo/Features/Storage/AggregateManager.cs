@@ -1,5 +1,6 @@
 ﻿using Featurize.DomainModel;
 using Featurize.Repositories;
+using System.Reflection;
 using System.Text.Json;
 
 namespace Featurize.Todo.Features.Storage;
@@ -8,7 +9,7 @@ public class AggregateManager<TAggregate, TId>
     where TAggregate : AggregateRoot<TAggregate, TId>
     where TId : struct, IEquatable<TId>
 {
-    private const string ApplyMethodName = "Apply";
+    private const string _applyMethodName = "Apply";
     private readonly IEntityRepository<PersistendEvent<TId>, Guid> _repository;
 
     public AggregateManager(IEntityRepository<PersistendEvent<TId>, Guid> repository)
@@ -21,7 +22,7 @@ public class AggregateManager<TAggregate, TId>
         var events = await _repository.Query
             .Where(x=>x.AggregateId.Equals(id))
             .OrderBy(x => x.Version)
-            .Select(x => GetEvent(x))
+            .Select(x => AggregateManager<TAggregate, TId>.GetEvent(x))
             .ToArrayAsync();
 
         
@@ -50,14 +51,14 @@ public class AggregateManager<TAggregate, TId>
                 aggregate.Id,
                 version,
                 e.GetType().Name,
-                JsonSerializer.Serialize(e)
+                JsonSerializer.Serialize(e, e.GetType(), JsonSerializerOptions.Default)
             ));
         }
     }
 
-    private EventRecord GetEvent(PersistendEvent<TId> x)
+    private static EventRecord GetEvent(PersistendEvent<TId> x)
     {
-        var eventType = GetEventType(x.EventName);
+        var eventType = AggregateManager<TAggregate, TId>.GetEventType(x.EventName);
        
         var e = JsonSerializer.Deserialize(x.Payload, eventType);
         if(e as EventRecord is null)
@@ -68,23 +69,19 @@ public class AggregateManager<TAggregate, TId>
         return (EventRecord)e;
     }
 
-    private Type GetEventType(string eventName)
+    private static Type GetEventType(string eventName)
     {
         var aggregateType = typeof(TAggregate);
         var methods = aggregateType
-            .GetMethods()
-            .Where(x => x.Name == ApplyMethodName);
+            .GetMethods(BindingFlags.Instance | BindingFlags.NonPublic)
+            .Where(x => x.Name == _applyMethodName);
 
         var eventTypes = methods.Select(x => x.GetParameters()[0]);
 
         var eventType = eventTypes.FirstOrDefault(x => x.ParameterType.Name == eventName)?.ParameterType;
 
-        if (eventType == null)
-        {
-            throw new InvalidOperationException($"Can not process event '{eventName}'");
-        }
-
-        return eventType;
+        return eventType 
+            ?? throw new InvalidOperationException($"Can not process event '{eventName}'");
     }
 }
 
