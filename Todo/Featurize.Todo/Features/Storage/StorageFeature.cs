@@ -12,7 +12,7 @@ public class StorageFeature : IServiceCollectionFeature, IConfigureOptions<Repos
 
     public void Configure(RepositoryProviderOptions options)
     {
-        options.AddProvider(new InMemoryRepositoryProvider());
+        options.AddInMemory();
     }
 }
 
