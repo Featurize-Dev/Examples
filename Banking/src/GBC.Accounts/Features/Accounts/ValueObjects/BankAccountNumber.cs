@@ -15,6 +15,12 @@ public record struct BankAccountNumber() : IValueObject<BankAccountNumber>
     public static BankAccountNumber Unknown => new() {  _bankAccountNumber = _unknownValue, Country = Country.Unknown };
     public static BankAccountNumber Empty => new () { _bankAccountNumber = null, Country = Country.Empty };
 
+
+    public override readonly string ToString()
+    {
+        return _bankAccountNumber?.ToString() ?? _unknownValue;
+    }
+
     public static BankAccountNumber Parse(string s)
         => Parse(s, null);
 
@@ -50,7 +56,7 @@ public record struct BankAccountNumber() : IValueObject<BankAccountNumber>
         return false;
     }
     
-    public bool IsEmpty()
+    public readonly bool IsEmpty()
         => this == Empty;
 
 

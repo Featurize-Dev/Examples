@@ -11,13 +11,17 @@
   <ItemGroup>
     <PackageReference Include="Featurize.AspNetCore" Version="1.3.0" />
     <PackageReference Include="Featurize.DomainModel" Version="0.0.1-alpha4" />
+    <PackageReference Include="Featurize.Repositories.InMemory" Version="0.6.1" />
     <PackageReference Include="Featurize.ValueObjects" Version="0.0.1-beta4" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.4" />
+    <PackageReference Include="System.Linq.Async.Queryable" Version="6.0.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Account\Commands\" />
-    <Folder Include="Features\Account\Entities\" />
+    <Folder Include="Features\Accounts\Commands\" />
+    <Folder Include="Features\Accounts\Entities\" />
+    <Folder Include="Features\Transactions\Entities\" />
+    <Folder Include="Features\Transactions\Queries\" />
   </ItemGroup>
 
   <ItemGroup>
