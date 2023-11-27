@@ -3,7 +3,8 @@ using Featurize;
 using Featurize.AspNetCore;
 using Featurize.Repositories;
 using Featurize.Repositories.EntityFramework;
-using Ordering.Features.Order.ValueObjects;
+using Microsoft.EntityFrameworkCore;
+using Ordering.Features.Buyer.ValueObjects;
 
 namespace Ordering.Features.Buyer;
 
@@ -11,15 +12,20 @@ public class BuyerFeature : IWebApplicationFeature, IConfigureOptions<Repository
 {
     public void Configure(IServiceCollection services)
     {
-        
+        var con = "Host=localhost;Database=OrdersDB;Username=postgresUser;Password=postgresPW";
+
+        services.AddDbContext<BuyerContext>(options =>
+        {
+            options.UseNpgsql(con);
+        });
     }
 
     public void Configure(RepositoryProviderOptions options)
     {
-        options.AddAggregate<BuyerAggregate, UserId>(x =>
+        options.AddAggregate<BuyerAggregate, BuyerId>(x =>
         {
             x.Provider(EntityFrameworkRepositoryProvider.DefaultName);
-            //x.UseContext<Buyer>
+            x.UseContext<BuyerContext>();
         });
     }
 

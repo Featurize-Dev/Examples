@@ -8,15 +8,19 @@ namespace Ordering.Features.Order;
 public class OrderAggregate : AggregateRoot<OrderAggregate, OrderId>
 {
     private readonly List<OrderItem> _orderItems = [];
+    private OrderStatus _status = OrderStatus.Unknown;
 
     private OrderAggregate(OrderId id) : base(id)
     {
     }
 
     public bool IsDraft { get; private set; } = false;
+    public string Status => _status.Name;
     public BuyerId BuyerId { get; private set; } = BuyerId.Empty;
     public Address Address { get; private set; } = Address.Empty;
     public OrderItem[] OrderItems => _orderItems.ToArray();
+
+    public decimal Total => _orderItems.Sum(o => o.Units * o.UnitPrice);
     
     public static OrderAggregate Create(UserInfo userInfo, Address address, List<OrderItem> orderItems)
     {
@@ -52,10 +56,32 @@ public class OrderAggregate : AggregateRoot<OrderAggregate, OrderId>
         }
     }
 
+    public void Ship()
+    {
+        if(_status != OrderStatus.Paid)
+        {
+            throw new InvalidOperationException("Order is not paid.");
+        }
+
+        RecordEvent(new OrderShipped());
+    }
+
+    public void Cancel()
+    {
+        if (_status == OrderStatus.Paid ||
+           _status == OrderStatus.Shipped)
+        {
+            throw new InvalidOperationException("Order can not be cancelled.");
+        }
+
+        RecordEvent(new OrderCancelled());
+    }
+
     internal void Apply(OrderCreated e)
     {
         Address = e.Address;  
         _orderItems.AddRange(e.OrderItems);
+        _status = OrderStatus.Submitted;
         IsDraft = e.Draft;
     }
 
@@ -70,8 +96,20 @@ public class OrderAggregate : AggregateRoot<OrderAggregate, OrderId>
         var newItem = _orderItems[exiting] with { Discount = e.Discount, Units = e.Units };
         _orderItems[exiting] = newItem;
     }
+
+    internal void Apply(OrderShipped e)
+    {
+        _status = OrderStatus.Shipped;
+    }
+
+    internal void Apply(OrderCancelled e)
+    {
+        _status = OrderStatus.Cancelled;
+    }
 }
 
 public record OrderCreated(UserInfo UserInfo, Address Address, List<OrderItem> OrderItems, bool Draft) : EventRecord;
 public record OrderItemAdded(ProductId ProductId, string ProductName, decimal UnitPrice, decimal Discount, string PictureUrl, int Units) : EventRecord;
 public record OrderItemChanged(ProductId ProductId, decimal Discount, int Units) : EventRecord;
+public record OrderShipped() : EventRecord;
+public record OrderCancelled() : EventRecord;

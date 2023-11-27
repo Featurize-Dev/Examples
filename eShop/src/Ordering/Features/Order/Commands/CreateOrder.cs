@@ -14,14 +14,15 @@ public static class CreateOrder
     }
 
     public static async Task<Results<Ok, BadRequest<string>>> Handle(
-        [FromHeader(Name = "requestid")] RequestId requestId,
+        [FromHeader(Name = "x-requestid")] RequestId requestId,
         [AsParameters] OrderServices services,
-        CreateOrderRequest request
-        )
+        CreateOrderRequest request)
     {
         var order = OrderAggregate.Create(request.CustomerInfo, request.Address, request.Items);
 
         await services.Manager.SaveAsync(order);
+
+        await services.Manager.PublishAsync("order", order);
 
         return TypedResults.Ok();
     }

@@ -9,7 +9,8 @@ public class BuyerAggregate : AggregateRoot<BuyerAggregate, BuyerId>
 {
     private readonly List<PaymentMethod> _paymentMethods = [];
 
-    public string Name { get; private set; }
+    public string Name { get; private set; } = string.Empty;
+
     public PaymentMethod[] PaymentMethods => _paymentMethods.ToArray();
 
     private BuyerAggregate(BuyerId id) : base(id)

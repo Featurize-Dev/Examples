@@ -3,6 +3,7 @@ using CommonFeatures.Storage;
 using CommonFeatures.Telemetry;
 using Featurize;
 using Featurize.Repositories;
+using Kafka;
 using Ordering.Features.OpenApi;
 
 namespace CommonFeatures;
@@ -11,6 +12,10 @@ public static class FeatureCollectionExtensions
     public static IFeatureCollection AddDefaultFeatures(this IFeatureCollection features)
     {
         return features
+            .AddKafka(options =>
+            {
+                options.BootstrapServers = "nas.home.lab:9092";
+            })
             .AddOpenTelemetry()
             .AddHealthChecks()
             .AddRepositories()

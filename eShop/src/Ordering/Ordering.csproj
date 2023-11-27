@@ -16,6 +16,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="8.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.5" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.0" />
   </ItemGroup>
@@ -23,7 +24,6 @@
   <ItemGroup>
     <Folder Include="Features\Buyer\Commands\" />
     <Folder Include="Features\Buyer\Queries\" />
-    <Folder Include="Features\Order\Queries\" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,19 +1,23 @@
-﻿using Featurize.DomainModel;
+﻿using Confluent.Kafka;
+using Featurize.DomainModel;
 using Featurize.Repositories;
 using System.Reflection;
 using System.Text.Json;
 
 namespace CommonFeatures.Storage;
-public class AggregateManager<TAggregate, TId>(IEntityRepository<PersistendEvent<TId>, Guid> repository)
+public class AggregateManager<TAggregate, TId>(
+    IEntityRepository<PersistendEvent<TId>, Guid> repository, 
+    IProducer<TId, PersistendEvent<TId>> eventProducer,
+    IProducer<TId, TAggregate> snapshotProducer)
+
     where TAggregate : AggregateRoot<TAggregate, TId>
     where TId : struct, IEquatable<TId>
 {
     private const string _applyMethodName = "Apply";
-    private readonly IEntityRepository<PersistendEvent<TId>, Guid> _repository = repository;
 
     public async Task<TAggregate?> LoadAsync(TId id)
     {
-        var events = await _repository.Query
+        var events = await repository.Query
             .Where(x => x.AggregateId.Equals(id))
             .OrderBy(x => x.Version)
             .Select(x => AggregateManager<TAggregate, TId>.GetEvent(x))
@@ -31,6 +35,36 @@ public class AggregateManager<TAggregate, TId>(IEntityRepository<PersistendEvent
         return aggregate;
     }
 
+    public async Task PublishAsync(string topic, TAggregate aggregate)
+    {
+        var events = aggregate.GetUncommittedEvents();
+
+        var version = aggregate.Version;
+        foreach (var e in events)
+        {
+            version++;
+            var evnt = new PersistendEvent<TId>(
+                   Guid.NewGuid(),
+                   typeof(TAggregate).Name,
+                   aggregate.Id,
+                   version,
+                   e.GetType().Name,
+                   JsonSerializer.Serialize(e, e.GetType(), JsonSerializerOptions.Default));
+
+            await eventProducer.ProduceAsync($"{topic}.events", new() 
+            {
+                Key = aggregate.Id,
+                Value = evnt,
+            });
+
+            await snapshotProducer.ProduceAsync($"{topic}.snapshot", new()
+            {
+                Key = aggregate.Id,
+                Value = aggregate,
+            });
+        }
+    }
+
     public async Task SaveAsync(TAggregate aggregate)
     {
         var events = aggregate.GetUncommittedEvents();
@@ -39,7 +73,7 @@ public class AggregateManager<TAggregate, TId>(IEntityRepository<PersistendEvent
         foreach (var e in events)
         {
             version++;
-            await _repository.SaveAsync(new PersistendEvent<TId>(
+            await repository.SaveAsync(new PersistendEvent<TId>(
                Guid.NewGuid(),
                typeof(TAggregate).Name,
                aggregate.Id,

@@ -12,13 +12,14 @@ public static class CreateDraftOrder
     }
 
     public static async Task<Ok> Handle(
-        [FromHeader(Name = "requestid")] RequestId requestId,
+        [FromHeader(Name = "x-requestid")] RequestId requestId,
         [AsParameters] OrderServices services,
         CreateDraftOrderRequest request)
     {
         var order = OrderAggregate.CreateDraft();
 
         await services.Manager.SaveAsync(order);
+        await services.Manager.PublishAsync("order", order);
 
         return TypedResults.Ok();
     }
