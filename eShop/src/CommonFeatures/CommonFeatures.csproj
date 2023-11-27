@@ -9,6 +9,7 @@
   <ItemGroup>
     <PackageReference Include="Featurize.AspNetCore" Version="1.4.0" />
     <PackageReference Include="Featurize.DomainModel" Version="0.1.0" />
+    <PackageReference Include="Featurize.Kafka" Version="0.0.4" />
     <PackageReference Include="Featurize.Repositories.EntityFramework" Version="0.7.0" />
     <PackageReference Include="Featurize.ValueObjects" Version="0.1.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.0" />

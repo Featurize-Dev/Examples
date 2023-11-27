@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Ordering.Features.Order.Entities;
 using Ordering.Features.Order.ValueObjects;
 
 namespace Ordering.Features.Order.Commands;
@@ -18,7 +19,7 @@ public static class CreateOrder
         CreateOrderRequest request
         )
     {
-        var order = new OrderAggregate(new OrderId());
+        var order = OrderAggregate.Create(request.CustomerInfo, request.Address, request.Items);
 
         await services.Manager.SaveAsync(order);
 
@@ -26,4 +27,4 @@ public static class CreateOrder
     }
 }
 
-public class CreateOrderRequest();
+public record CreateOrderRequest(UserInfo CustomerInfo, Address Address, List<OrderItem> Items);

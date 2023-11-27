@@ -1,5 +1,5 @@
-﻿namespace Ordering.Features.Order.Entities;
+﻿using Ordering.Features.Order.ValueObjects;
 
-public class OrderItem
-{
-}
+namespace Ordering.Features.Order.Entities;
+
+public record OrderItem(ProductId ProductId, string ProductName, decimal UnitPrice, decimal Discount, string PictureUrl, int Units = 1);

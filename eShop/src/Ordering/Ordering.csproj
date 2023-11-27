@@ -22,7 +22,6 @@
 
   <ItemGroup>
     <Folder Include="Features\Buyer\Commands\" />
-    <Folder Include="Features\Buyer\Entities\" />
     <Folder Include="Features\Buyer\Queries\" />
     <Folder Include="Features\Order\Queries\" />
   </ItemGroup>
