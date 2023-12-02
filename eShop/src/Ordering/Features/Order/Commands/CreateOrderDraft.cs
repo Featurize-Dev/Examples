@@ -19,7 +19,6 @@ public static class CreateDraftOrder
         var order = OrderAggregate.CreateDraft();
 
         await services.Manager.SaveAsync(order);
-        await services.Manager.PublishAsync("order", order);
 
         return TypedResults.Ok();
     }

@@ -22,8 +22,6 @@ public static class CreateOrder
 
         await services.Manager.SaveAsync(order);
 
-        await services.Manager.PublishAsync("order", order);
-
         return TypedResults.Ok();
     }
 }

@@ -26,7 +26,7 @@ public class OrderFeature : IWebApplicationFeature,
 
     public void Configure(IServiceCollection services)
     {
-        var con = "Host=localhost;Database=OrdersDB;Username=postgresUser;Password=postgresPW";
+        var con = "Host=nas.home.lab;Database=OrdersDB;Username=postgresUser;Password=postgresPW";
 
         services.AddDbContext<OrderContext>(options =>
         {

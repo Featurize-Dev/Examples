@@ -35,53 +35,41 @@ public class AggregateManager<TAggregate, TId>(
         return aggregate;
     }
 
-    public async Task PublishAsync(string topic, TAggregate aggregate)
+    public async Task SaveAsync(TAggregate aggregate)
     {
         var events = aggregate.GetUncommittedEvents();
-
         var version = aggregate.Version;
+        var aggregateName = typeof(TAggregate).Name;
+
         foreach (var e in events)
         {
             version++;
-            var evnt = new PersistendEvent<TId>(
-                   Guid.NewGuid(),
-                   typeof(TAggregate).Name,
-                   aggregate.Id,
-                   version,
-                   e.GetType().Name,
-                   JsonSerializer.Serialize(e, e.GetType(), JsonSerializerOptions.Default));
-
-            await eventProducer.ProduceAsync($"{topic}.events", new() 
+            var evnt = CreatePresistedEvent(aggregate, aggregateName, version, e);
+            await repository.SaveAsync(evnt);
+            await eventProducer.ProduceAsync($"{aggregateName}.events", new()
             {
                 Key = aggregate.Id,
                 Value = evnt,
             });
-
-            await snapshotProducer.ProduceAsync($"{topic}.snapshot", new()
-            {
-                Key = aggregate.Id,
-                Value = aggregate,
-            });
         }
+
+        await snapshotProducer.ProduceAsync($"{aggregateName}.snapshot", new()
+        {
+            Key = aggregate.Id,
+            Value = aggregate,
+        });
     }
 
-    public async Task SaveAsync(TAggregate aggregate)
+    private static PersistendEvent<TId> CreatePresistedEvent(TAggregate aggregate, string aggregateName, int version, EventRecord e)
     {
-        var events = aggregate.GetUncommittedEvents();
-
-        var version = aggregate.Version;
-        foreach (var e in events)
-        {
-            version++;
-            await repository.SaveAsync(new PersistendEvent<TId>(
-               Guid.NewGuid(),
-               typeof(TAggregate).Name,
-               aggregate.Id,
-               version,
-               e.GetType().Name,
-               JsonSerializer.Serialize(e, e.GetType(), JsonSerializerOptions.Default)
-           ));
-        }
+        return new PersistendEvent<TId>(
+                       Guid.NewGuid(),
+                       aggregateName,
+                       aggregate.Id,
+                       version,
+                       e.GetType().Name,
+                       JsonSerializer.Serialize(e, e.GetType(), JsonSerializerOptions.Default)
+                   );
     }
 
     private static EventRecord GetEvent(PersistendEvent<TId> x)

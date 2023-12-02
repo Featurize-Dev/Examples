@@ -26,7 +26,6 @@ public static class CancelOrder
         order.Cancel();
 
         await services.Manager.SaveAsync(order);
-        await services.Manager.PublishAsync("order", order);
 
         return TypedResults.Ok();
     }

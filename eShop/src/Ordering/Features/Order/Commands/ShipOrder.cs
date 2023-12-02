@@ -27,7 +27,6 @@ public static class ShipOrder
         order.Ship();
 
         await services.Manager.SaveAsync(order);
-        await services.Manager.PublishAsync("order", order);
 
         return TypedResults.Ok();
     }

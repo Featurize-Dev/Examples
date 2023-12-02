@@ -12,7 +12,7 @@ public class BuyerFeature : IWebApplicationFeature, IConfigureOptions<Repository
 {
     public void Configure(IServiceCollection services)
     {
-        var con = "Host=localhost;Database=OrdersDB;Username=postgresUser;Password=postgresPW";
+        var con = "Host=nas.home.lab;Database=OrdersDB;Username=postgresUser;Password=postgresPW";
 
         services.AddDbContext<BuyerContext>(options =>
         {
