@@ -1,0 +1,58 @@
+﻿@page "/item/{itemId:int}"
+
+@using System.Net
+@using WebApp.Features.Cart
+@using WebApp.Features.Catalog.Entities
+
+@inject CatalogService CatalogService
+@inject CartState CartState
+@inject NavigationManager Nav
+
+<PageTitle>@item.Name | Nordics</PageTitle>
+
+<div>
+    @numInCart
+</div>
+
+@code {
+    private CatalogItem? item;
+    private int numInCart;
+
+    private bool isLoggedin;
+    private bool notFound;
+
+    [Parameter]
+    public int ItemId { get; set; }
+
+    [CascadingParameter]
+    public HttpContext? HttpContext { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            isLoggedin = HttpContext?.User.Identity?.IsAuthenticated == true;
+            item = new CatalogItem()
+            {
+                Id = ItemId,
+                Name = "Test",
+                PictureUri = "",
+                Price = 1,
+            };
+
+            await UpdateNumInCartAsync();
+
+        }
+        catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
+        {
+            HttpContext!.Response.StatusCode = 404;
+            notFound = true;
+        }
+    }
+
+    private async Task UpdateNumInCartAsync()
+    {
+        var items = await CartState.GetCartItems();
+        numInCart = items.FirstOrDefault(row => row.ProductId == ItemId)?.Quantity ?? 0;
+    }
+}

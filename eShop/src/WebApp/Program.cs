@@ -3,7 +3,7 @@ using Featurize;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var features = builder.Features()
+builder.Features()
     .AddDefaultFeatures()
     .DiscoverFeatures();
 

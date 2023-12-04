@@ -10,4 +10,59 @@ public class CatalogService(HttpClient httpClient)
     {
         return httpClient.GetFromJsonAsync<CatalogItem?>($"{_baseUrl}/{id}");
     }
+
+    public async Task<CatalogResult> GetCatalogItems(int pageIndex, int pageSize, int? brandId, int? typeId)
+    {
+        return new CatalogResult(pageIndex, pageSize, 0, [
+            new CatalogItem()
+            {
+                Id = 1,
+                Name = "Test",
+                PictureUri = "",
+                Price = 1,
+            },
+            new CatalogItem()
+            {
+                Id = 1,
+                Name = "Test",
+                PictureUri = "",
+                Price = 1,
+            },
+            new CatalogItem()
+            {
+                Id = 1,
+                Name = "Test",
+                PictureUri = "",
+                Price = 1,
+            },
+            new CatalogItem()
+            {
+                Id = 1,
+                Name = "Test",
+                PictureUri = "",
+                Price = 1,
+            },
+            new CatalogItem()
+            {
+                Id = 1,
+                Name = "Test",
+                PictureUri = "",
+                Price = 1,
+            },
+            new CatalogItem()
+            {
+                Id = 1,
+                Name = "Test",
+                PictureUri = "",
+                Price = 1,
+            },
+            new CatalogItem()
+            {
+                Id = 1,
+                Name = "Test",
+                PictureUri = "",
+                Price = 1,
+            }
+            ]);
+    }
 }

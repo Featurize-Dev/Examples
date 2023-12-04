@@ -1,8 +1,8 @@
 ﻿using Featurize.AspNetCore;
 
-namespace WebApp.Features.BlazorComponens;
+namespace WebApp.Features.App;
 
-public class BlazorComponentsFeature : IWebApplicationFeature
+public class AppFeature : IWebApplicationFeature
 {
     public void Configure(IServiceCollection services)
     {

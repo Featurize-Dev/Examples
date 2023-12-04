@@ -1,13 +1,12 @@
 ﻿using Featurize;
-using Featurize.AspNetCore;
 
-namespace WebApp.Features.Catalog;
+namespace WebApp.Features.User;
 
-public class CatalogFeature : IServiceCollectionFeature
+public class UserFeature : IServiceCollectionFeature
 {
     public void Configure(IServiceCollection services)
     {
-        services.AddHttpClient<CatalogService>(client =>
+        services.AddHttpClient<UserService>(client =>
         {
             client.BaseAddress = new Uri("https://localhost:5001");
         });
