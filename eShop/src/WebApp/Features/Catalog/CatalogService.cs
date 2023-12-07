@@ -11,6 +11,9 @@ public class CatalogService(HttpClient httpClient)
         return httpClient.GetFromJsonAsync<CatalogItem?>($"{_baseUrl}/{id}");
     }
 
+    public string Url(CatalogItem item)
+        => $"item/{item.Id}";
+
     public async Task<CatalogResult> GetCatalogItems(int pageIndex, int pageSize, int? brandId, int? typeId)
     {
         return new CatalogResult(pageIndex, pageSize, 0, [

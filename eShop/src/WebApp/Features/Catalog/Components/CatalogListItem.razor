@@ -1,7 +1,9 @@
 ﻿@using WebApp.Features.Catalog.Entities
 
+@inject CatalogService CatalogService
+
 <div class="w-full md:w-1/3 xl:w-1/4 p-6 flex flex-col">
-    <a href="@Url(Item)">
+    <a href="@CatalogService.Url(Item)">
         <img class="hover:grow hover:shadow-lg" 
             src="https://images.unsplash.com/photo-1555982105-d25af4182e4e?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=400&amp;h=400&amp;q=80">
         <div class="pt-3 flex items-center justify-between">
@@ -22,6 +24,5 @@
     [Parameter]
     public bool IsLoggedIn { get; set; }
 
-    public string Url(CatalogItem item)
-        => $"item/{item.Id}";
+    
 }

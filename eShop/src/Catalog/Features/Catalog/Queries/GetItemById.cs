@@ -21,7 +21,9 @@ public static class GetItemById
             return TypedResults.BadRequest("Id is not valid.");
         }
 
-        var item = await services.Context.CatalogItems.Include(ci => ci.CatalogBrand).SingleOrDefaultAsync(ci => ci.Id == id);
+        var item = await services.Context.CatalogItems
+            .Include(ci => ci.CatalogBrand)
+            .SingleOrDefaultAsync(ci => ci.Id == id);
 
         if(item == null)
         {

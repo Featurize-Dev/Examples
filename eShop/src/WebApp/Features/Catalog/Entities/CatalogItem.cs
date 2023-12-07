@@ -6,6 +6,8 @@ public class CatalogItem
     public string Name { get; set; }
     public string PictureUri { get; set; }
     public int Price { get; set; }
+
+    public string Description { get; set; } = "";
 }
 
 public record CatalogResult(int PageIndex, int PageSize, int Count, List<CatalogItem> Data);
