@@ -10,7 +10,7 @@ public class CatalogFeature : IWebApplicationFeature
 {
     public void Configure(IServiceCollection services)
     {
-        var con = "Host=localhost;Database=CatalogDB;Username=postgresUser;Password=postgresPW";
+        var con = "Host=nas.home.lab;Database=CatalogDB;Username=postgresUser;Password=postgresPW";
 
         services.AddDbContext<CatalogContext>(options =>
         {

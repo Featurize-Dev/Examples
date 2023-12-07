@@ -4,13 +4,14 @@ namespace WebApp.Features.Catalog;
 
 public class CatalogService(HttpClient httpClient)
 {
-    private readonly string _baseUrl = "api/v1/catalog";
+    private readonly string _baseUrl = "api/v1/catalog/items";
 
-    public Task<CatalogItem?> GetCatalogItem(int id)
+    public async Task<CatalogItem?> GetCatalogItem(int id)
     {
-        return httpClient.GetFromJsonAsync<CatalogItem?>($"{_baseUrl}/{id}");
+        var result = await httpClient.GetFromJsonAsync<CatalogItem?>($"{_baseUrl}/{id}");
+        return result;
     }
-
+     
     public string Url(CatalogItem item)
         => $"item/{item.Id}";
 
@@ -21,49 +22,49 @@ public class CatalogService(HttpClient httpClient)
             {
                 Id = 1,
                 Name = "Test",
-                PictureUri = "",
+                PictureFilename = "",
                 Price = 1,
             },
             new CatalogItem()
             {
                 Id = 1,
                 Name = "Test",
-                PictureUri = "",
+                PictureFilename = "",
                 Price = 1,
             },
             new CatalogItem()
             {
                 Id = 1,
                 Name = "Test",
-                PictureUri = "",
+                PictureFilename = "",
                 Price = 1,
             },
             new CatalogItem()
             {
                 Id = 1,
                 Name = "Test",
-                PictureUri = "",
+                PictureFilename = "",
                 Price = 1,
             },
             new CatalogItem()
             {
                 Id = 1,
                 Name = "Test",
-                PictureUri = "",
+                PictureFilename = "",
                 Price = 1,
             },
             new CatalogItem()
             {
                 Id = 1,
                 Name = "Test",
-                PictureUri = "",
+                PictureFilename = "",
                 Price = 1,
             },
             new CatalogItem()
             {
                 Id = 1,
                 Name = "Test",
-                PictureUri = "",
+                PictureFilename = "",
                 Price = 1,
             }
             ]);

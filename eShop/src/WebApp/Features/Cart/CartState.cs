@@ -48,7 +48,7 @@ public class CartState(
                     ProductId = item.CatalogItemId,                                                                 
                     Quantity = item.Quantity,
                     ProductName = catalogItem?.Name ?? string.Empty,
-                    PictureUrl = catalogItem?.PictureUri ?? string.Empty,
+                    PictureUrl = catalogItem?.PictureFilename ?? string.Empty,
                     UnitPrice = catalogItem?.Price ?? 0,
                 };
             }));

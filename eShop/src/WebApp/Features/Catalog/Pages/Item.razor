@@ -8,17 +8,19 @@
 @inject CartState CartState
 @inject NavigationManager Nav
 
+
+
+@if(item is not null)
+{
+    
 <PageTitle>@item.Name | Nordics</PageTitle>
-
-
-
 <section class="bg-white py-8">
     <div class="container mx-auto flex flex-row -mx-4">
 
         <div class="flex-1 px-4">
 
             <div class="h-[460px] rounded-lg bg-gray-100 mb-4">
-                <img class="w-full h-full object-cover" src="@item.PictureUri" alt="@item.Name" />
+                <img class="w-full h-full object-cover" src="@item.PictureFilename" alt="@item.Name" />
             </div>
 
             
@@ -73,6 +75,13 @@
 
     </div>
 </section>
+} 
+else if(notFound)
+{
+    <div class="item-details">
+        <p>Sorry, we couldn't find any such product.</p>
+    </div>
+}
 
 @code {
     private CatalogItem? item;
@@ -92,14 +101,17 @@
         try
         {
             isLoggedin = HttpContext?.User.Identity?.IsAuthenticated == true;
-            item = new CatalogItem()
-            {
-                Id = ItemId,
-                Name = "Test",
-                Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sed ante justo. Integer euismod libero id mauris malesuada tincidunt.",
-                    PictureUri = "https://cdn.pixabay.com/photo/2020/05/22/17/53/mockup-5206355_960_720.jpg",
-                Price = 1,
-            };
+            var test = await CatalogService.GetCatalogItem(ItemId);
+
+            item = await CatalogService.GetCatalogItem(ItemId);
+            // new CatalogItem()
+            // {
+            //     Id = ItemId,
+            //     Name = "Test",
+            //     Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sed ante justo. Integer euismod libero id mauris malesuada tincidunt.",
+            //         PictureUri = "https://cdn.pixabay.com/photo/2020/05/22/17/53/mockup-5206355_960_720.jpg",
+            //     Price = 1,
+            // };
 
             await UpdateNumInCartAsync();
 

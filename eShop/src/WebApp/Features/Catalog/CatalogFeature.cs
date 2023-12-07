@@ -9,7 +9,7 @@ public class CatalogFeature : IServiceCollectionFeature
     {
         services.AddHttpClient<CatalogService>(client =>
         {
-            client.BaseAddress = new Uri("https://localhost:5001");
+            client.BaseAddress = new Uri("http://catalog-api");
         });
     }
 }

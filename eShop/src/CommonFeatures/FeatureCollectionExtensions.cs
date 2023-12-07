@@ -1,4 +1,5 @@
-﻿using CommonFeatures.HealthChecks;
+﻿using CommonFeatures.Aspire;
+using CommonFeatures.HealthChecks;
 using CommonFeatures.Storage;
 using CommonFeatures.Telemetry;
 using Featurize;
@@ -12,6 +13,7 @@ public static class FeatureCollectionExtensions
     public static IFeatureCollection AddDefaultFeatures(this IFeatureCollection features)
     {
         return features
+            .AddAspire()
             .AddKafka(options =>
             {
                 options.BootstrapServers = "nas.home.lab:9092";
@@ -41,5 +43,10 @@ public static class FeatureCollectionExtensions
     public static IFeatureCollection AddStorage(this IFeatureCollection features)
     {
         return features.Add(new StorageFeature());
+    }
+
+    public static IFeatureCollection AddAspire(this IFeatureCollection features)
+    {
+        return features.Add(new AspireFeature());
     }
 }
