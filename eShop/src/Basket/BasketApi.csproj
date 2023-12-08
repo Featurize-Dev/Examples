@@ -10,7 +10,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Grpc.AspNetCore" Version="2.59.0" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.5" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CommonFeatures\CommonFeatures.csproj" />
+  </ItemGroup>
+
+	<ItemGroup>
+		<Protobuf Include="Cart\Proto\basket.proto" GrpcServices="Server" />
+	</ItemGroup>
 
 </Project>

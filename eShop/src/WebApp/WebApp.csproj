@@ -7,10 +7,22 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Grpc.AspNetCore.Server.ClientFactory" Version="2.59.0" />
+    <PackageReference Include="Grpc.Tools" Version="2.59.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\CommonFeatures\CommonFeatures.csproj" />
   </ItemGroup>
 
-  <Target Name="Tailwind" BeforeTargets="Build" >
+  <ItemGroup>
+	<Protobuf Include="..\Basket\Cart\Proto\basket.proto" GrpcServices="Client" />
+  </ItemGroup>
+
+  <Target Name="Tailwind" BeforeTargets="Build">
 	  <Exec Command="npm run css:build" Condition="'$(Configuration)'=='Release'" />
 	  <Exec Command="npm run css:watch" Condition="'$(Configuration)'=='Debug'" />
   </Target>

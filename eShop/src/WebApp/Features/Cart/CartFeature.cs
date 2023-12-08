@@ -1,4 +1,5 @@
-﻿using Featurize;
+﻿using BasketApi.Grpc;
+using Featurize;
 
 namespace WebApp.Features.Cart;
 
@@ -6,9 +7,9 @@ public class CartFeature : IServiceCollectionFeature
 {
     public void Configure(IServiceCollection services)
     {
-        services.AddHttpClient<CartService>(client =>
+        services.AddGrpcClient<Basket.BasketClient>(client =>
         {
-            client.BaseAddress = new Uri("https://localhost:5001");
+            client.Address = new Uri("http://basket-api");
         });
 
         services.AddScoped<CartState>();

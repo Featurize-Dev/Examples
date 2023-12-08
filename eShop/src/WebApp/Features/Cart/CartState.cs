@@ -41,11 +41,11 @@ public class CartState(
 
             var cartItems = await Task.WhenAll(quantities.Select(async item =>
             {
-                var catalogItem = await catalogService.GetCatalogItem(item.CatalogItemId);
+                var catalogItem = await catalogService.GetCatalogItem(item.ProductId);
                 return new CartItem
                 {
                     Id = Guid.NewGuid(),
-                    ProductId = item.CatalogItemId,                                                                 
+                    ProductId = item.ProductId,                                                                 
                     Quantity = item.Quantity,
                     ProductName = catalogItem?.Name ?? string.Empty,
                     PictureUrl = catalogItem?.PictureFilename ?? string.Empty,

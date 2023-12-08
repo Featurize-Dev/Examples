@@ -9,7 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{5235BFA9-D77
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{9F4E12B1-0F18-4163-B136-4A855BAD03C8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Basket", "src\Basket\Basket.csproj", "{A09D0EFB-3967-4024-A574-BC5B59551EEB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BasketApi", "src\Basket\BasketApi.csproj", "{A09D0EFB-3967-4024-A574-BC5B59551EEB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Catalog", "src\Catalog\Catalog.csproj", "{70BCC1AA-2852-4FE1-84F3-7AA15341E4D3}"
 EndProject

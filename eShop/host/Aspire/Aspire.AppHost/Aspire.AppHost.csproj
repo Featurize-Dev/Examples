@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\src\Basket\Basket.csproj" />
+    <ProjectReference Include="..\..\..\src\Basket\BasketApi.csproj" />
     <ProjectReference Include="..\..\..\src\Catalog\Catalog.csproj" />
     <ProjectReference Include="..\..\..\src\Ordering\Ordering.csproj" />
     <ProjectReference Include="..\..\..\src\WebApp\WebApp.csproj" />
