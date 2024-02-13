@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using WebApp.Features.Cart.Entities;
+using WebApp.Features.Catalog.Entities;
 
 namespace WebApp.Features.Cart;
 
@@ -11,6 +12,31 @@ public class CartState(
 {
     private Task<IReadOnlyCollection<CartItem>>? _cachedBasket;
     private readonly HashSet<CartStateChangedSubscription> _changeSubscriptions = [];
+
+    public async Task AddAsync(CatalogItem item)
+    {
+        var items = (await FetchCartItemsAsync()).Select(i => new BasketQuantity(i.ProductId, i.Quantity)).ToList();
+        bool found = false;
+        for(var i =0; i <items.Count; i++)
+        {
+            var existingItem = items[i];    
+            if (existingItem.ProductId == item.Id)
+            {
+                items[i] = existingItem with {  Quantity = existingItem.Quantity + 1 };
+                found = true;
+                break;
+            }
+        }
+
+        if (!found)
+        {
+            items.Add(new BasketQuantity(item.Id, 1));
+        }
+
+        _cachedBasket = null;
+        await cartService.UpdateCart(items);
+        await NotifyChangeSubscribersAsync();
+    }
 
     public Task DeleteCart()
         => cartService.DeleteCart();

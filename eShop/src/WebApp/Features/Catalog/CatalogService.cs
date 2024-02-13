@@ -21,49 +21,49 @@ public class CatalogService(HttpClient httpClient)
             new CatalogItem()
             {
                 Id = 1,
-                Name = "Test",
+                Name = "Test 1",
                 PictureFilename = "",
                 Price = 1,
             },
             new CatalogItem()
             {
-                Id = 1,
-                Name = "Test",
+                Id = 2,
+                Name = "Test 2",
                 PictureFilename = "",
                 Price = 1,
             },
             new CatalogItem()
             {
-                Id = 1,
-                Name = "Test",
+                Id = 3,
+                Name = "Test 3",
                 PictureFilename = "",
                 Price = 1,
             },
             new CatalogItem()
             {
-                Id = 1,
-                Name = "Test",
+                Id = 4,
+                Name = "Test 4",
                 PictureFilename = "",
                 Price = 1,
             },
             new CatalogItem()
             {
-                Id = 1,
-                Name = "Test",
+                Id = 5,
+                Name = "Test 5",
                 PictureFilename = "",
                 Price = 1,
             },
             new CatalogItem()
             {
-                Id = 1,
-                Name = "Test",
+                Id = 6,
+                Name = "Test 6",
                 PictureFilename = "",
                 Price = 1,
             },
             new CatalogItem()
             {
-                Id = 1,
-                Name = "Test",
+                Id = 7,
+                Name = "Test 7",
                 PictureFilename = "",
                 Price = 1,
             }

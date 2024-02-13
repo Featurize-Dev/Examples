@@ -7,6 +7,8 @@ public class CartFeature : IWebApplicationFeature
     public void Configure(IServiceCollection services)
     {
         services.AddGrpc();
+
+        services.AddSingleton<BasketStore>();
     }
 
     public void Use(WebApplication app)
