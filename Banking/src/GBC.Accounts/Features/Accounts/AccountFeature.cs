@@ -1,6 +1,7 @@
 ﻿using Featurize.AspNetCore;
+using GBC.Accounts.Features.Accounts.Commands;
 
-namespace GBC.Accounts.Features.Account;
+namespace GBC.Accounts.Features.Accounts;
 
 public class AccountFeature : IWebApplicationFeature
 {
@@ -18,6 +19,7 @@ public class AccountFeature : IWebApplicationFeature
                 Description = "",
             });
 
+        group.MapTransfrer();
 
     }
 }

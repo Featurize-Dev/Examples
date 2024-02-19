@@ -5,7 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 
-namespace GBC.Accounts.Features.Account.ValueObjects;
+namespace GBC.Accounts.Features.Accounts.ValueObjects;
 
 public record struct BankAccountNumber() : IValueObject<BankAccountNumber>
 {

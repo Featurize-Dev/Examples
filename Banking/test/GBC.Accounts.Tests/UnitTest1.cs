@@ -1,5 +1,5 @@
 using Featurize.ValueObjects;
-using GBC.Accounts.Features.Account.ValueObjects;
+using GBC.Accounts.Features.Accounts.ValueObjects;
 
 namespace GBC.Accounts.Tests;
 
