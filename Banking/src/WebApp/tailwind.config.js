@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 const defaultTheme = require('tailwindcss/defaultTheme');
+const { iconsPlugin, dynamicIconsPlugin } = require("@egoist/tailwindcss-icons")
 const plugin = require('tailwindcss/plugin');
 
 const doubleSpacing = {};
@@ -249,5 +250,7 @@ module.exports = {
             addVariant('peer-invalid', ':merge(.peer).is-invalid ~ &');
             addVariant('negative', '&.is-negative');
         },
+        iconsPlugin(),
+        dynamicIconsPlugin()
     ],
 }

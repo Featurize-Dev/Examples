@@ -1,16 +1,50 @@
 ﻿@inherits LayoutComponentBase
 
-<div class="bg-gradient-45 from-g-600 to-g-300 text-white h-[100px]">
-    <div class="justify-content-between">
+<div class="bg-gradient-45 from-g-600 to-g-300 text-white h-[100px] p-2">
+    <div class="flex justify-between">
         <div>
-            <a href="#"><i class="qr" /></a>
-            <a href="#"><i class="qr" /></a>
+            <a href="#" alt="scan-qr"><span class="i-[bi--qr-code-scan]"></span></a>
+            <a href="#" alt="notification"><span class="i-[bi--bell]"></span></a>
         </div>
         <div>
             <a href="logout">Uitloggen</a>
         </div>
     </div>
-    <h1 class="h1">Producten</h1>
+    <h1 class="text-2xl">Producten</h1>
 </div>
 
+<div class="bg-white text-sm font-thin text-center text-gray-200 border-b border-gray-200">
+    <ul class="flex flex-wrap -mb-px">
+        <li class="me-2">
+            <a href="#" class="inline-block p-1 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300">Products</a>
+        </li>
+        <li class="me-2">
+            <a href="#" class="inline-block p-1 text-blue-600 border-b-2 border-blue-600 rounded-t-lg active dark:text-blue-500 dark:border-blue-500" aria-current="page">Betalen</a>
+        </li>
+        <li class="me-2">
+            <a href="#" class="inline-block p-1 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300">Beleggen</a>
+        </li>
+        <li class="me-2">
+            <a href="#" class="inline-block p-1 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300">Hypotheken</a>
+        </li>
+        <li class="me-2">
+            <a href="#" class="inline-block p-1 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300">Lenen</a>
+        </li>
+        <li class="me-2">
+            <a href="#" class="inline-block p-1 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300">Verzekeren</a>
+        </li>
+        <li class="me-2">
+            <a href="#" class="inline-block p-1 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300">Pensioenen</a>
+        </li>
+        <li>
+            <a class="inline-block p-1 text-gray-400 rounded-t-lg cursor-not-allowed dark:text-gray-500">Disabled</a>
+        </li>
+    </ul>
+</div>
+
+
 @Body
+
+<footer>
+
+</footer>
