@@ -1,7 +1,9 @@
-﻿namespace Hypotheken.Domain;
+﻿using Common.ValueObjects;
+
+namespace Hypotheken.Domain;
 
 public class Lening
 {
     public List<Leningdeel> Leningdelen { get; set;} = [];
-    public decimal Totaal => Leningdelen.Sum(x => x.Bedrag);
+    public decimal Totaal => Leningdelen.Sum(x => (decimal)x.Bedrag);
 }
