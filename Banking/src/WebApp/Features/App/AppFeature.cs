@@ -1,4 +1,6 @@
 ﻿using Featurize.AspNetCore;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 
 namespace WebApp.Features.App;
 
@@ -6,6 +8,8 @@ public class AppFeature : IWebApplicationFeature
 {
     public void Configure(IServiceCollection services)
     {
+        services.AddScoped<AppState>();
+
         services.AddRazorComponents()
             .AddInteractiveServerComponents();
 

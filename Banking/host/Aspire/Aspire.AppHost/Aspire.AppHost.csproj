@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\Accounts\Accounts.csproj" />
+    <ProjectReference Include="..\..\..\src\Customers\Customers.csproj" />
     <ProjectReference Include="..\..\..\src\WebApp\WebApp.csproj" />
   </ItemGroup>
 

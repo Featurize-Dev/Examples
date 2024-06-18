@@ -1,4 +1,6 @@
-﻿@inherits LayoutComponentBase
+﻿@using Microsoft.AspNetCore.Components.Web
+@inherits LayoutComponentBase
+@inject AppState AppState
 
 <div class="bg-gradient-45 from-g-600 to-g-300 text-white h-[100px] p-2">
     <div class="flex justify-between">
@@ -10,10 +12,10 @@
             <a href="logout">Uitloggen</a>
         </div>
     </div>
-    <h1 class="text-2xl">Producten</h1>
+    <h1 class="text-2xl">@AppState.Caption</h1>
 </div>
 
-<div class="bg-white text-sm font-thin text-center text-gray-200 border-b border-gray-200">
+<div class="bg-white text-sm font-thin text-center text-gray-200 border-b border-gray-50">
     <ul class="flex flex-wrap -mb-px">
         <li class="me-2">
             <a href="#" class="inline-block p-1 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300">Products</a>
@@ -46,5 +48,18 @@
 @Body
 
 <footer>
-
 </footer>
+
+@code
+{
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        AppState.PropertyChanged += OnPropertyChanged;
+    }
+     
+    private void OnPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+    {
+        StateHasChanged();
+    }
+}

@@ -1,11 +1,19 @@
 ﻿@page "/"
+@using WebApp.Features.App.Layouts
 
 @inject NavigationManager Nav
 @inject AccountService AccountService
+@inject AppState AppState
+
 @attribute [StreamRendering]
 
 <h3>Account</h3>
 
 @code {
 
+
+    protected override void OnInitialized()
+    {
+        AppState.Caption = "Rekening Overzicht";
+    }
 }
