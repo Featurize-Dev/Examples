@@ -15,6 +15,6 @@ public class Tests
     {
         var bc = BankAccountNumber.Parse("NL78ABNA0498857158");
         
-        Assert.IsNotNull(bc);
+        Assert.That(bc != BankAccountNumber.Unknown);
     }
 }

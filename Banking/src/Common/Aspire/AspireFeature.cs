@@ -8,12 +8,10 @@ public class AspireFeature : IServiceCollectionFeature
     public void Configure(IServiceCollection services)
     {
         services.AddServiceDiscovery();
-
+        
         services.ConfigureHttpClientDefaults(http =>
         {
             http.AddStandardResilienceHandler();
-
-            http.UseServiceDiscovery();
         });
     }
 
