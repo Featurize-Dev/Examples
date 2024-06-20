@@ -1,4 +1,4 @@
-﻿using Common.ValueObjects;
+using Common.ValueObjects;
 
 namespace Hypotheken.Domain;
 

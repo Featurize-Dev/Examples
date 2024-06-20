@@ -1,4 +1,4 @@
-﻿namespace Hypotheken.Domain;
+namespace Hypotheken.Domain;
 
 public class Aflossingsvrij(decimal MaandelijkseAflossing) : IleningdeelType
 {

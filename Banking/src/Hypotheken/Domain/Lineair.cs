@@ -4,6 +4,6 @@ public class Lineair : IleningdeelType
 {
     public RestSchuld GetRestschuld(Leningdeel leningdeel, int termijn)
     {
-        throw new NotImplementedException();
+        var maandelijkseAflossing = leningdeel.Hoofdsom
     }
 }
