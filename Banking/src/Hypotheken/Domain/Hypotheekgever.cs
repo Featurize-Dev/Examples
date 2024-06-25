@@ -9,6 +9,6 @@ public class Hypotheekgever
     public string Tussenvoegsel { get; set; } = string.Empty;
     public string Achternaam { get; set; } = string.Empty;
     public DateOnly Geboortedatum { get; set; }
-    public BSN Burgerservicenummer { get;set; }
+    public BSN BurgerServiceNummer { get;set; }
 
 }

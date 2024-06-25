@@ -4,8 +4,6 @@ namespace Hypotheken.Domain;
 
 public record Leningdeel(ILeningdeelType LeningdeelType, int Looptijd, RenteVastePeriode RenteVastePeriode, Amount Hoofdsom)
 {
-    private Termijnen? _termijnen;
-
     public static Leningdeel Annuitear(int looptijd, RenteVastePeriode renteVastePeriode, Amount hoofdsom) => new(new Annuitair(), looptijd, renteVastePeriode, hoofdsom);
     public static Leningdeel Lineair(int looptijd, RenteVastePeriode renteVastePeriode, Amount hoofdsom) => new(new Lineair(), looptijd, renteVastePeriode, hoofdsom);
     public static Leningdeel Aflossingsvrij(int looptijd, RenteVastePeriode renteVastePeriode, Amount hoofdsom, decimal extraAflossing = 0) => 
@@ -16,7 +14,4 @@ public record Leningdeel(ILeningdeelType LeningdeelType, int Looptijd, RenteVast
     
     public Amount GetAflossing(Amount resterend, int termijn)
         => LeningdeelType.GetAflossing(this, resterend, termijn);
-
-    public Termijnen Termijnen
-        => _termijnen ??= new(this);
 }

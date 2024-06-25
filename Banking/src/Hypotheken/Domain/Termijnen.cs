@@ -1,6 +1,4 @@
 ﻿using Common.ValueObjects;
-using System.Collections;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Hypotheken.Domain;
 
@@ -8,10 +6,16 @@ public class Termijnen : List<Termijn>
 {
     private readonly Leningdeel _leningdeel;
 
-    public Termijnen(Leningdeel leningdeel)
+    private Termijnen(Leningdeel leningdeel)
     {
         _leningdeel = leningdeel;
-        Genereer();
+    }
+
+    public static Termijnen Create(Leningdeel leningdeel)
+    {
+        var termijn = new Termijnen(leningdeel);
+        termijn.Genereer();
+        return termijn;
     }
 
     private void Genereer()

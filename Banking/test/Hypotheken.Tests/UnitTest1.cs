@@ -10,14 +10,14 @@ public class UnitTest1
     [Fact]
     public void Test1()
     {
-        var akte = new HypotheekAkte();
+        var akte = new Hypotheek();
 
         akte.Hypotheekgevers.Add(new Hypotheekgever()
         {
             Voornaam = "Patrick",
             Achternaam = "Evers",
             Tussenvoegsel = string.Empty,
-            Burgerservicenummer = BSN.Parse("128.328.559"),
+            BurgerServiceNummer = BSN.Parse("128.328.559"),
             Geboortedatum = DateOnly.Parse("1978-10-09"),
             PII = new()
         });
@@ -69,5 +69,8 @@ public class UnitTest1
 
         var result = BoeteRente.Oversluiten(ld, RenteVastePeriode.Create(3, 120));
 
+        var woning = Onderpand.Eengezinswoning(Energielabel.F, 250_000);
+
+        
     }
 } 

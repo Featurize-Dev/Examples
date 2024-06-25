@@ -16,7 +16,8 @@ public record RestSchuld(Amount Bruto, Amount Aflossing, Amount Netto)
 
     public static RestSchuld Create(Leningdeel leningdeel, int termijn)
     {
-        var t = leningdeel.Termijnen[..termijn];
+        var termijnen = Termijnen.Create(leningdeel);
+        var t = termijnen[..termijn];
         var sum_aflossingen = t.Sum(x => (decimal)x.Betaling);
         var sum_rente = t.Sum(x => (decimal)x.Rente);
         var hoofdsom = t.First().BeginStand + sum_rente;
