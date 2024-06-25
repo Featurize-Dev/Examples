@@ -1,9 +1,11 @@
-﻿namespace Hypotheken.Domain;
+﻿using Common.ValueObjects;
 
-public class Lineair : IleningdeelType
+namespace Hypotheken.Domain;
+
+public class Lineair : ILeningdeelType
 {
-    public RestSchuld GetRestschuld(Leningdeel leningdeel, int termijn)
+    public Amount GetAflossing(Leningdeel leningdeel, Amount rente, int termijn)
     {
-        var maandelijkseAflossing = leningdeel.Hoofdsom
+        return leningdeel.Hoofdsom / leningdeel.Looptijd;
     }
 }

@@ -2,16 +2,21 @@ using Common.ValueObjects;
 
 namespace Hypotheken.Domain;
 
-public record Leningdeel(IleningdeelType leningdeelType, DateOnly StartDatum, int Looptijd, int RenteVastePeriode, Percentage Rente, decimal Hoofdsom)
+public record Leningdeel(ILeningdeelType LeningdeelType, int Looptijd, RenteVastePeriode RenteVastePeriode, Amount Hoofdsom)
 {
-    public static Leningdeel Annuitear(DateOnly startDatum, int looptijd, int renteVastePeriode, Percentage rente, Amount bedrag) => new(new Annuitair(), startDatum, looptijd, renteVastePeriode, rente, bedrag);
-    public static Leningdeel Lineair(DateOnly startDatum, int looptijd, int renteVastePeriode, Percentage rente, Amount bedrag) => new(new Lineair(), startDatum, looptijd, renteVastePeriode, rente, bedrag);
-    public static Leningdeel Aflossingsvrij(DateOnly startDatum, int looptijd, int renteVastePeriode, Percentage rente, Amount bedrag, decimal extraAflossing = 0) => 
-        new(new Aflossingsvrij(extraAflossing), startDatum, looptijd, renteVastePeriode, rente, bedrag);
+    private Termijnen? _termijnen;
 
+    public static Leningdeel Annuitear(int looptijd, RenteVastePeriode renteVastePeriode, Amount hoofdsom) => new(new Annuitair(), looptijd, renteVastePeriode, hoofdsom);
+    public static Leningdeel Lineair(int looptijd, RenteVastePeriode renteVastePeriode, Amount hoofdsom) => new(new Lineair(), looptijd, renteVastePeriode, hoofdsom);
+    public static Leningdeel Aflossingsvrij(int looptijd, RenteVastePeriode renteVastePeriode, Amount hoofdsom, decimal extraAflossing = 0) => 
+        new(new Aflossingsvrij(extraAflossing), looptijd, renteVastePeriode, hoofdsom);
+
+    public DateOnly StartDatum => RenteVastePeriode.StartDatum;
     public DateOnly EindDatum => StartDatum.AddMonths(Looptijd);
-    public DateOnly EindDatumRenteVastePeriode => StartDatum.AddMonths(RenteVastePeriode);
+    
+    public Amount GetAflossing(Amount resterend, int termijn)
+        => LeningdeelType.GetAflossing(this, resterend, termijn);
 
-    public RestSchuld GetRestschuld(int termijn) => 
-        leningdeelType.GetRestschuld(this, termijn);
+    public Termijnen Termijnen
+        => _termijnen ??= new(this);
 }

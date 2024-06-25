@@ -1,6 +1,8 @@
-﻿namespace Hypotheken.Domain;
+﻿using Common.ValueObjects;
 
-public interface IleningdeelType
+namespace Hypotheken.Domain;
+
+public interface ILeningdeelType
 {
-    RestSchuld GetRestschuld(Leningdeel leningdeel, int termijn);
+    Amount GetAflossing(Leningdeel leningdeel, Amount rente, int termijn);
 }

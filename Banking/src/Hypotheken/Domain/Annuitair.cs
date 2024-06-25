@@ -1,9 +1,16 @@
-﻿namespace Hypotheken.Domain;
+﻿using Common.ValueObjects;
 
-public class Annuitair : IleningdeelType
+namespace Hypotheken.Domain;
+
+public class Annuitair : ILeningdeelType
 {
-    public RestSchuld GetRestschuld(Leningdeel leningdeel, int termijn)
+    public Amount GetAflossing(Leningdeel leningdeel, Amount rente, int termijn)
     {
-        throw new NotImplementedException();
+        var hypotheek = (double)leningdeel.Hoofdsom;
+        var maandrente = (double)leningdeel.RenteVastePeriode.MaandRente;
+        
+        var annuiteit = maandrente / (1 - Math.Pow(1 + maandrente, -leningdeel.Looptijd)) * hypotheek;
+
+        return (decimal)annuiteit - rente;
     }
 }

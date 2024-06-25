@@ -69,6 +69,7 @@ public partial record struct Percentage : IValueObject<Percentage>
 
     public static implicit operator Percentage(decimal val) => Create(val);
     public static explicit operator decimal(Percentage val) => val._value ?? 0;
+    public static explicit operator double(Percentage val) => (double)(val._value ?? 0);
 }
 
 public partial record struct Percentage :
@@ -79,7 +80,9 @@ public partial record struct Percentage :
     IAdditionOperators<Percentage, Percentage, Percentage>,
     ISubtractionOperators<Percentage, Percentage, Percentage>,
     IMultiplyOperators<Percentage, Percentage, Percentage>,
-    IDivisionOperators<Percentage, Percentage, Percentage>
+    IDivisionOperators<Percentage, Percentage, Percentage>,
+    IDivisionOperators<Percentage, decimal, Percentage>,
+    IDivisionOperators<Percentage, int, Percentage>
 { 
     public static Percentage operator ++(Percentage value)
         => new(value._value++);
@@ -97,13 +100,19 @@ public partial record struct Percentage :
         => new(left._value + right._value);
 
     public static Percentage operator -(Percentage left, Percentage right)
-        => new(left._value + right._value);
+        => new(left._value - right._value);
 
     public static Percentage operator *(Percentage left, Percentage right)
         => new(left._value * right._value);
 
     public static Percentage operator /(Percentage left, Percentage right)
         => new(left._value / right._value);
+
+    public static Percentage operator /(Percentage left, decimal right)
+        => new((decimal)left / right);
+
+    public static Percentage operator /(Percentage left, int right)
+        => new((decimal)left / right);
 }
 
 

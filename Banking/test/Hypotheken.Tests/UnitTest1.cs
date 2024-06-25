@@ -22,7 +22,9 @@ public class UnitTest1
             PII = new()
         });
 
-        var leningdeel = Leningdeel.Aflossingsvrij(new(2024, 1, 1), 360, 120, 1.04m, 150_000);
+        var rvp = RenteVastePeriode.Create(1.04m, 120);
+
+        var leningdeel = Leningdeel.Aflossingsvrij(360, rvp, 150_000);
 
         var pTest1 = Percentage.Create(1.04m);
         var pTest = Percentage.Parse("1,04%");
@@ -32,6 +34,40 @@ public class UnitTest1
 
         pTest1.Equals(pTest);
         
-        akte.Lening.Leningdelen.Add(leningdeel);
+        //akte.Lening.Leningdelen.Add(leningdeel);
+    }
+
+
+    [Fact]
+    public void TermijnenTests()
+    {
+        var renteVastePeriode = new RenteVastePeriode(new(2024, 1, 1), 1.04m, 120);
+
+        var aflossingsvrij = Leningdeel.Aflossingsvrij(360, renteVastePeriode, 150_000);
+
+        var annuitair = Leningdeel.Annuitear(360, renteVastePeriode, 150_000);
+
+        var lineair = Leningdeel.Lineair(360, renteVastePeriode, 150_000);
+
+        //var termijnen = new Termijnen(annuitair);
+
+        var rest =  RestSchuld.Create(aflossingsvrij, 120);
+        
+        var r1 = RestSchuld.EindeLooptijd(lineair);
+        var r2 = RestSchuld.EindeLooptijd(aflossingsvrij);
+        var r3 = RestSchuld.EindeLooptijd(annuitair);
+
+        var r1a = RestSchuld.EindeRenteVastePeriode(lineair);
+        var r2a = RestSchuld.EindeRenteVastePeriode(aflossingsvrij);
+        var r3a = RestSchuld.EindeRenteVastePeriode(annuitair);
+
+        var date = DateOnly.FromDateTime(DateTime.Now.AddMonths(-(120 - 24)));
+
+        var rvp = new RenteVastePeriode(date, 5m, 120);
+
+        var ld = Leningdeel.Aflossingsvrij(360, rvp, 100_000);
+
+        var result = BoeteRente.Oversluiten(ld, RenteVastePeriode.Create(3, 120));
+
     }
 } 
