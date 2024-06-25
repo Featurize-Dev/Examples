@@ -1,6 +1,6 @@
 using Common.ValueObjects;
 
-namespace Hypotheken.Domain;
+namespace Hypotheken.Domain.Leningdelen;
 
 public class Aflossingsvrij(decimal MaandelijkseAflossing) : ILeningdeelType
 {

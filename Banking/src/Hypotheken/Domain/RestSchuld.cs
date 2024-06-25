@@ -2,11 +2,6 @@
 
 namespace Hypotheken.Domain;
 
-public static class RestschuldExtension
-{
-    
-}
-
 public record RestSchuld(Amount Bruto, Amount Aflossing, Amount Netto)
 {
     public static RestSchuld Create(Leningdeel leningdeel, DateOnly date)

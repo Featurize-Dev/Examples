@@ -1,4 +1,5 @@
 ﻿using Common.ValueObjects;
+using static Hypotheken.Domain.Termijnen;
 
 namespace Hypotheken.Domain;
 
@@ -31,10 +32,11 @@ public class Termijnen : List<Termijn>
             Add(termijn);
         }
     }
+    public sealed record Termijn(Amount BeginStand, Amount Rente, Amount Aflossing)
+    {
+        public Amount Eindstand => Amount.Create(Math.Max((decimal)BeginStand - (decimal)Aflossing, 0), BeginStand.Currency);
+        public Amount Betaling => Aflossing + Rente;
+    }
 }
 
-public sealed record Termijn(Amount BeginStand, Amount Rente, Amount Aflossing)
-{
-    public Amount Eindstand => Amount.Create(Math.Max((decimal)BeginStand - (decimal)Aflossing, 0), BeginStand.Currency);
-    public Amount Betaling => Aflossing + Rente;
-}
+

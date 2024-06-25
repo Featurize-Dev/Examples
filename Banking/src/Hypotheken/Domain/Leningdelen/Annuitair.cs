@@ -1,6 +1,6 @@
 ﻿using Common.ValueObjects;
 
-namespace Hypotheken.Domain;
+namespace Hypotheken.Domain.Leningdelen;
 
 public class Annuitair : ILeningdeelType
 {
@@ -8,7 +8,7 @@ public class Annuitair : ILeningdeelType
     {
         var hypotheek = (double)leningdeel.Hoofdsom;
         var maandrente = (double)leningdeel.RenteVastePeriode.MaandRente;
-        
+
         var annuiteit = maandrente / (1 - Math.Pow(1 + maandrente, -leningdeel.Looptijd)) * hypotheek;
 
         return (decimal)annuiteit - rente;
