@@ -19,27 +19,3 @@ public interface IOnderpandType
 {
     Amount GetWaarde();
 }
-
-public class Eengezinswoning(Amount marktwaarde) : IOnderpandType
-{
-    public Amount Marktwaarde { get; set; } = marktwaarde;
-
-    public Amount GetWaarde()
-        => Marktwaarde;
-}
-
-public class Winkel : IOnderpandType
-{
-    public Amount GetWaarde()
-    {
-        throw new NotImplementedException();
-    }
-}
-
-public class EengezinswoningMetGarage : IOnderpandType
-{
-    public Amount GetWaarde()
-    {
-        throw new NotImplementedException();
-    }
-}
