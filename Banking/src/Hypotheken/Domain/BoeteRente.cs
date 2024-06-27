@@ -24,6 +24,4 @@ public sealed record BoeteRente(Leningdeel Leningdeel, Amount Boete)
             restschuld.Netto),
             boete);
     }
-
-
 }

@@ -19,7 +19,6 @@ public class UnitTest1
             Tussenvoegsel = string.Empty,
             BurgerServiceNummer = BSN.Parse("128.328.559"),
             Geboortedatum = DateOnly.Parse("1978-10-09"),
-            PII = new()
         });
 
         var rvp = RenteVastePeriode.Create(1.04m, 120);
@@ -71,6 +70,22 @@ public class UnitTest1
 
         var woning = Onderpand.Eengezinswoning(Energielabel.F, 250_000);
 
+        var lening = new Lening();
+
+        lening.Add(ld);
         
+        var hypotheek = new Hypotheek()
+        {
+            Hypotheekgevers = [
+                new Hypotheekgever() {
+                        
+                    }
+                ],
+            Hypotheeknemer = Hypotheeknemer.GoldCreditBank,
+            Lening = lening,
+            Onderpand = Onderpand.Eengezinswoning(Energielabel.F, 250_000)
+        };
+
+
     }
 } 

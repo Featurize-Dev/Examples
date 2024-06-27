@@ -1,6 +1,6 @@
 ﻿using Common.ValueObjects;
 
-namespace Hypotheken.Domain;
+namespace Hypotheken.Domain.Onderpanden;
 
 public class Winkel : IOnderpandType
 {

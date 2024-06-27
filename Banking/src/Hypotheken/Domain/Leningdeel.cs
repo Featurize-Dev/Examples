@@ -1,5 +1,5 @@
 using Common.ValueObjects;
-using Hypotheken.Domain.Leningdelen;
+using Hypotheken.Domain.Aflosvormen;
 
 namespace Hypotheken.Domain;
 

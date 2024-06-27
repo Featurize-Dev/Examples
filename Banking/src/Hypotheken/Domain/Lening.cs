@@ -8,6 +8,8 @@ public class Lening
     private List<Leningdeel> _leningdelen = [];
     public IReadOnlyList<Leningdeel> Leningdelen => _leningdelen.AsReadOnly();
 
+    public static Lening Empty() => new();
+
     public void Add(Leningdeel leningdeel)
     {
         if (!_leningdelen.Any())
