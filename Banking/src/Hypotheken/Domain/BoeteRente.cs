@@ -4,18 +4,21 @@ namespace Hypotheken.Domain;
 
 public sealed record BoeteRente(Leningdeel Leningdeel, Amount Boete)
 {
-    public static BoeteRente Oversluiten(Leningdeel leningdeel, RenteVastePeriode renteVastePeriode)
+    public static BoeteRente Oversluiten(Leningdeel leningdeel, RenteVastePeriode renteVastePeriode, DateOnly ingangsDatum)
     {
-        var diff = (leningdeel.RenteVastePeriode.Rente - renteVastePeriode.Rente) / 12;
-        var maanden = ((leningdeel.RenteVastePeriode.EindDatum.Year - renteVastePeriode.StartDatum.Year) * 12)
-            + leningdeel.RenteVastePeriode.EindDatum.Month - renteVastePeriode.StartDatum.Month;
+        var einddatum = leningdeel.StartDatum.AddMonths(renteVastePeriode.Looptijd);
 
-        var restschuld = RestSchuld.OpDatum(leningdeel, renteVastePeriode.StartDatum);
+        var diff = (leningdeel.RenteVastePeriode.Rente - renteVastePeriode.Rente) / 12;
+        var maanden = ((einddatum.Year - ingangsDatum.Year) * 12)
+            + einddatum.Month - ingangsDatum.Month;
+
+        var restschuld = RestSchuld.OpDatum(leningdeel, leningdeel.StartDatum);
         var boete = (restschuld.Netto * diff) * maanden;
 
         return new(
             new Leningdeel(
-            leningdeel.LeningdeelType, 
+            leningdeel.LeningdeelType,
+            ingangsDatum,
             leningdeel.Looptijd,
             renteVastePeriode,
             restschuld.Netto),

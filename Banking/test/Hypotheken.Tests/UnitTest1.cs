@@ -24,7 +24,7 @@ public class UnitTest1
 
         var rvp = RenteVastePeriode.Create(1.04m, 120);
 
-        var leningdeel = Leningdeel.Aflossingsvrij(360, rvp, 150_000);
+        var leningdeel = Leningdeel.Aflossingsvrij(new(2024,1,1), 360, rvp, 150_000);
 
         var pTest1 = Percentage.Create(1.04m);
         var pTest = Percentage.Parse("1,04%");
@@ -41,13 +41,13 @@ public class UnitTest1
     [Fact]
     public void TermijnenTests()
     {
-        var renteVastePeriode = new RenteVastePeriode(new(2024, 1, 1), 1.04m, 120);
+        var renteVastePeriode = new RenteVastePeriode(1.04m, 120);
 
-        var aflossingsvrij = Leningdeel.Aflossingsvrij(360, renteVastePeriode, 150_000);
+        var aflossingsvrij = Leningdeel.Aflossingsvrij(new(2024, 1, 1), 360, renteVastePeriode, 150_000);
 
-        var annuitair = Leningdeel.Annuitear(360, renteVastePeriode, 150_000);
+        var annuitair = Leningdeel.Annuitear(new(2024, 1, 1), 360, renteVastePeriode, 150_000);
 
-        var lineair = Leningdeel.Lineair(360, renteVastePeriode, 150_000);
+        var lineair = Leningdeel.Lineair(new(2024, 1, 1), 360, renteVastePeriode, 150_000);
 
         //var termijnen = new Termijnen(annuitair);
 
@@ -63,11 +63,11 @@ public class UnitTest1
 
         var date = DateOnly.FromDateTime(DateTime.Now.AddMonths(-(120 - 24)));
 
-        var rvp = new RenteVastePeriode(date, 5m, 120);
+        var rvp = new RenteVastePeriode(5m, 120);
 
-        var ld = Leningdeel.Aflossingsvrij(360, rvp, 100_000);
+        var ld = Leningdeel.Aflossingsvrij(date, 360, rvp, 100_000);
 
-        var result = BoeteRente.Oversluiten(ld, RenteVastePeriode.Create(3, 120));
+        var result = BoeteRente.Oversluiten(ld, RenteVastePeriode.Create(3, 120), DateOnly.FromDateTime(DateTime.Now));
 
         var woning = Onderpand.Eengezinswoning(Energielabel.F, 250_000);
 

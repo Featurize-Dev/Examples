@@ -1,16 +1,22 @@
 ﻿using Common.ValueObjects;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Hypotheken.Domain;
 
 public record RestSchuld(Amount Bruto, Amount Aflossing, Amount Netto)
 {
-    public static RestSchuld Create(Leningdeel leningdeel, DateOnly date)
-        => Create(leningdeel, 
-            (( date.Year - leningdeel.StartDatum.Year) * 12) + 
-            date.Month - leningdeel.StartDatum.Month);
-
     public static RestSchuld Create(Leningdeel leningdeel, int termijn)
     {
+        if (termijn < 1)
+        {
+            return new(leningdeel.Hoofdsom, 0, leningdeel.Hoofdsom);
+        }
+
+        if (termijn > leningdeel.Looptijd)
+        {
+            termijn = leningdeel.Looptijd;
+        }
+
         var termijnen = Termijnen.Create(leningdeel);
         var t = termijnen[..termijn];
         var sum_aflossingen = t.Sum(x => (decimal)x.Betaling);
@@ -20,7 +26,9 @@ public record RestSchuld(Amount Bruto, Amount Aflossing, Amount Netto)
     }
 
     public static RestSchuld OpDatum(Leningdeel leningdeel, DateOnly datum)
-       => Create(leningdeel, datum);
+        => Create(leningdeel,
+            ((datum.Year - leningdeel.StartDatum.Year) * 12) +
+            datum.Month - leningdeel.StartDatum.Month);
 
     public static RestSchuld EindeTermijn(Leningdeel leningdeel, int termijn)
        => Create(leningdeel, termijn);
