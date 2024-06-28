@@ -27,16 +27,15 @@ public class Termijnen : List<Termijn>
         {
             var rente = resterend * _leningdeel.RenteVastePeriode.MaandRente;
             var aflossing = _leningdeel.GetAflossing(rente, i);
-            var termijn = new Termijn(resterend, rente, aflossing);
-            resterend = termijn.Eindstand;
-            Add(termijn);
+            var eindstand = Amount.Create(Math.Max((decimal)resterend - (decimal)aflossing, 0), resterend.Currency);
+            var betaling = aflossing + rente;
+            
+            Add(new Termijn(resterend, rente, aflossing, betaling, eindstand));
+
+            resterend = eindstand;
         }
     }
-    public sealed record Termijn(Amount BeginStand, Amount Rente, Amount Aflossing)
-    {
-        public Amount Eindstand => Amount.Create(Math.Max((decimal)BeginStand - (decimal)Aflossing, 0), BeginStand.Currency);
-        public Amount Betaling => Aflossing + Rente;
-    }
+    public sealed record Termijn(Amount BeginStand, Amount Rente, Amount Aflossing, Amount Betaling, Amount Eindstand);
 }
 
 
