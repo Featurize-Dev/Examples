@@ -1,5 +1,6 @@
 using Common;
 using Common.ValueObjects;
+using FluentAssertions;
 using Hypotheken.Domain;
 using System.ComponentModel.DataAnnotations;
 
@@ -23,13 +24,13 @@ public class UnitTest1
 
         var rvp = RenteVastePeriode.Create(1.04m, 120);
 
-        var leningdeel = Leningdeel.Aflossingsvrij(new(2024,1,1), 360, rvp, 150_000);
+        var leningdeel = Leningdeel.CreateAflossingsvrij(new(2024,1,1), 360, rvp, 150_000);
 
         var pTest1 = Percentage.Create(1.04m);
         var pTest = Percentage.Parse("1,04%");
 
         Percentage test = 1.04m;
-        var hmm = (decimal)Percentage.Parse("1%");
+        var hmm = Percentage.Parse("1%");
 
         pTest1.Equals(pTest);
         
@@ -42,11 +43,11 @@ public class UnitTest1
     {
         var renteVastePeriode = new RenteVastePeriode(1.04m, 120);
 
-        var aflossingsvrij = Leningdeel.Aflossingsvrij(new(2024, 1, 1), 360, renteVastePeriode, 150_000);
+        var aflossingsvrij = Leningdeel.CreateAflossingsvrij(new(2024, 1, 1), 360, renteVastePeriode, 150_000);
 
-        var annuitair = Leningdeel.Annuitear(new(2024, 1, 1), 360, renteVastePeriode, 150_000);
+        var annuitair = Leningdeel.CreateAnnuitear(new(2024, 1, 1), 360, renteVastePeriode, 150_000);
 
-        var lineair = Leningdeel.Lineair(new(2024, 1, 1), 360, renteVastePeriode, 150_000);
+        var lineair = Leningdeel.CreateLineair(new(2024, 1, 1), 360, renteVastePeriode, 150_000);
 
         //var termijnen = new Termijnen(annuitair);
 
@@ -64,8 +65,7 @@ public class UnitTest1
 
         var rvp = new RenteVastePeriode(5m, 120);
 
-        var ld = LeningdeelBuilder.Create()
-            .Aflossingsvrij(date, 360, rvp, 100_000);
+        var ld = Leningdeel.CreateAflossingsvrij(date, 360, rvp, 100_000);
 
         var result = BoeteRente.Oversluiten(ld, RenteVastePeriode.Create(3, 120), DateOnly.FromDateTime(DateTime.Now));
 
@@ -88,5 +88,18 @@ public class UnitTest1
         };
 
 
+    }
+
+    [Fact]
+    public void BoeteRente_Berekenen()
+    {
+        var rvp = RenteVastePeriode.Create(4, 24);
+        var date = DateTime.Now.AddMonths(-rvp.Looptijd);
+        var leningdeel = Leningdeel.CreateLineair(DateOnly.FromDateTime(date), 300, rvp, 150_000);
+
+        var new_rvp = RenteVastePeriode.Create(2, 120);
+        var boete = (decimal)BoeteRente.Oversluiten(leningdeel, new_rvp, DateOnly.FromDateTime(date));
+
+        boete.Should().BeApproximately(5400, 1);
     }
 } 

@@ -1,33 +1,50 @@
 using Common.ValueObjects;
+using Hypotheken.Domain.Aflosvormen;
 
 namespace Hypotheken.Domain;
 
 
 public interface Aflosvorm
 {
+    Percentage Boetevrij { get; }
     Amount GetAflossing(Leningdeel leningdeel, Amount rente, int termijn);
 }
 
-public record Leningdeel(Aflosvorm LeningdeelType, DateOnly StartDatum, int Looptijd, RenteVastePeriode RenteVastePeriode, Amount Hoofdsom)
+public record Leningdeel(Aflosvorm AflostVorm, DateOnly StartDatum, int Looptijd, RenteVastePeriode RenteVastePeriode, Amount Hoofdsom)
 {
-    public static Leningdeel Annuitear(DateOnly startDatum, int looptijd, RenteVastePeriode renteVastePeriode, decimal hoofdsom)
+    public static Leningdeel CreateAnnuitear(DateOnly startDatum, int looptijd, RenteVastePeriode renteVastePeriode, decimal hoofdsom)
         => LeningdeelBuilder
             .Create()
-            .Annuitear(startDatum, looptijd, renteVastePeriode, hoofdsom);
+            .WithAflosvorm(new Annuitair())
+            .WithStartDatum(startDatum)
+            .WithLooptijd(looptijd)
+            .WithRenteVastePeriode(renteVastePeriode)
+            .WithHoofdsom(hoofdsom)
+            .Build();
 
-    public static Leningdeel Lineair(DateOnly startDatum, int looptijd, RenteVastePeriode renteVastePeriode, decimal hoofdsom)
+    public static Leningdeel CreateLineair(DateOnly startDatum, int looptijd, RenteVastePeriode renteVastePeriode, decimal hoofdsom)
         => LeningdeelBuilder
             .Create()
-            .Lineair(startDatum, looptijd, renteVastePeriode, hoofdsom);
+            .WithAflosvorm(new Lineair())
+            .WithStartDatum(startDatum)
+            .WithLooptijd(looptijd)
+            .WithRenteVastePeriode(renteVastePeriode)
+            .WithHoofdsom(hoofdsom)
+            .Build();
 
-    public static Leningdeel Aflossingsvrij(DateOnly startDatum, int looptijd, RenteVastePeriode renteVastePeriode, decimal hoofdsom, decimal extraAflossing = 0)
+    public static Leningdeel CreateAflossingsvrij(DateOnly startDatum, int looptijd, RenteVastePeriode renteVastePeriode, decimal hoofdsom, decimal extraAflossing = 0)
         => LeningdeelBuilder
             .Create()
-            .Aflossingsvrij(startDatum, looptijd, renteVastePeriode, hoofdsom, extraAflossing);
+            .WithAflosvorm(new Aflossingsvrij(extraAflossing))
+            .WithStartDatum(startDatum)
+            .WithLooptijd(looptijd)
+            .WithRenteVastePeriode(renteVastePeriode)
+            .WithHoofdsom(hoofdsom)
+            .Build();
 
 
     public DateOnly EindDatum => StartDatum.AddMonths(Looptijd);
     
     public Amount GetAflossing(Amount resterend, int termijn)
-        => LeningdeelType.GetAflossing(this, resterend, termijn);
+        => AflostVorm.GetAflossing(this, resterend, termijn);
 }
