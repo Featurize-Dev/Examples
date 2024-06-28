@@ -1,5 +1,4 @@
 using Common.ValueObjects;
-using Hypotheken.Domain.Aflosvormen;
 
 namespace Hypotheken.Domain;
 
@@ -11,12 +10,21 @@ public interface Aflosvorm
 
 public record Leningdeel(Aflosvorm LeningdeelType, DateOnly StartDatum, int Looptijd, RenteVastePeriode RenteVastePeriode, Amount Hoofdsom)
 {
-    public static Leningdeel Annuitear(DateOnly startDatum, int looptijd, RenteVastePeriode renteVastePeriode, Amount hoofdsom) 
-        => new(new Annuitair(), startDatum, looptijd, renteVastePeriode, hoofdsom);
-    public static Leningdeel Lineair(DateOnly startDatum, int looptijd, RenteVastePeriode renteVastePeriode, Amount hoofdsom)
-        => new(new Lineair(), startDatum, looptijd, renteVastePeriode, hoofdsom);
-    public static Leningdeel Aflossingsvrij(DateOnly startDatum, int looptijd, RenteVastePeriode renteVastePeriode, Amount hoofdsom, decimal extraAflossing = 0)
-        => new(new Aflossingsvrij(extraAflossing), startDatum, looptijd, renteVastePeriode, hoofdsom);
+    public static Leningdeel Annuitear(DateOnly startDatum, int looptijd, RenteVastePeriode renteVastePeriode, decimal hoofdsom)
+        => LeningdeelBuilder
+            .Create()
+            .Annuitear(startDatum, looptijd, renteVastePeriode, hoofdsom);
+
+    public static Leningdeel Lineair(DateOnly startDatum, int looptijd, RenteVastePeriode renteVastePeriode, decimal hoofdsom)
+        => LeningdeelBuilder
+            .Create()
+            .Lineair(startDatum, looptijd, renteVastePeriode, hoofdsom);
+
+    public static Leningdeel Aflossingsvrij(DateOnly startDatum, int looptijd, RenteVastePeriode renteVastePeriode, decimal hoofdsom, decimal extraAflossing = 0)
+        => LeningdeelBuilder
+            .Create()
+            .Aflossingsvrij(startDatum, looptijd, renteVastePeriode, hoofdsom, extraAflossing);
+
 
     public DateOnly EindDatum => StartDatum.AddMonths(Looptijd);
     

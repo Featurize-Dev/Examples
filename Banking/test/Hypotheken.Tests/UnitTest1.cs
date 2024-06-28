@@ -64,7 +64,8 @@ public class UnitTest1
 
         var rvp = new RenteVastePeriode(5m, 120);
 
-        var ld = Leningdeel.Aflossingsvrij(date, 360, rvp, 100_000);
+        var ld = LeningdeelBuilder.Create()
+            .Aflossingsvrij(date, 360, rvp, 100_000);
 
         var result = BoeteRente.Oversluiten(ld, RenteVastePeriode.Create(3, 120), DateOnly.FromDateTime(DateTime.Now));
 
