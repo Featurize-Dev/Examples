@@ -1,18 +1,18 @@
 ﻿using Common.ValueObjects;
 using System.Collections;
-using static Hypotheken.Domain.HypotheekKosten;
+using static Hypotheken.Domain.Hypotheekkosten;
 
 namespace Hypotheken.Domain;
 
-public sealed class HypotheekKosten : IEnumerable<Kosten>
+public sealed class Hypotheekkosten : IEnumerable<Kosten>
 {
     private readonly List<Kosten> _kosten = [];
 
-    private HypotheekKosten()
+    private Hypotheekkosten()
     {
     }
 
-    public static HypotheekKosten Create()
+    public static Hypotheekkosten Create()
         => new();
 
     public void Add(Kosten kosten)
