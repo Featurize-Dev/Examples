@@ -69,7 +69,7 @@ public class UnitTest1
 
         var result = BoeteRente.Oversluiten(ld, RenteVastePeriode.Create(3, 120), DateOnly.FromDateTime(DateTime.Now));
 
-        var woning = Onderpand.Eengezinswoning(Energielabel.F, 250_000);
+        var woning = OnderpandFactory.Eengezinswoning(Energielabel.F, 250_000);
 
         var lening = new Lening();
 
@@ -84,7 +84,7 @@ public class UnitTest1
                 ],
             Hypotheeknemer = Hypotheeknemer.GoldCreditBank,
             Lening = lening,
-            Onderpand = Onderpand.Eengezinswoning(Energielabel.F, 250_000)
+            Onderpand = OnderpandFactory.Eengezinswoning(Energielabel.F, 250_000)
         };
 
 
