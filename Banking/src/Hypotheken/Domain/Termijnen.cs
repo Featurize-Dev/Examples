@@ -27,7 +27,7 @@ public class Termijnen : List<Termijn>
         {
             var rente = resterend * _leningdeel.RenteVastePeriode.MaandRente;
             var aflossing = _leningdeel.GetAflossing(rente, i);
-            var eindstand = Amount.Create(Math.Max((decimal)resterend - (decimal)aflossing, 0), resterend.Currency);
+            var eindstand = Amount.Create(Math.Max((decimal)resterend - (decimal)aflossing, 0));
             var betaling = aflossing + rente;
             
             Add(new Termijn(resterend, rente, aflossing, betaling, eindstand));

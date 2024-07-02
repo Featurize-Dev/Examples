@@ -10,7 +10,7 @@ namespace Common.ValueObjects;
 [JsonConverter(typeof(ValueObjectJsonConverter))]
 [TypeConverter(typeof(ValueObjectTypeConverter))]
 [DebuggerDisplay("{ToString()}")]
-public record struct BSN : IValueObject<BSN>
+public readonly record struct BSN : IValueObject<BSN>
 {
     private readonly string _value;
 

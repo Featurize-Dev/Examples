@@ -15,41 +15,31 @@ namespace Common.ValueObjects;
 public partial record struct Amount : IValueObject<Amount>
 {
     private decimal? _value = 0;
-    public readonly Currency Currency { get; }
     
-    private Amount(decimal? value, Currency currency)
+    private Amount(decimal? value)
     {
         _value = value;
-        Currency = currency;
     }
 
-    public static Amount Unknown => new(null, Currency.Default);
+    public static Amount Unknown => new(null);
 
-    public static Amount Empty => new(0, Currency.Default);
-    public static Amount Zero => new(0, Currency.Default);
+    public static Amount Empty => new(0);
+    public static Amount Zero => new(0);
 
-    public static Amount One => new(1, Currency.Default);
+    public static Amount One => new(1);
 
     public static Amount Create(decimal value)
-        => new(value, Currency.Default);
+        => new(value);
     
-    public static Amount Create(decimal value, Currency currency)
-        => new(value, currency);
-
     public static Amount Create(int value)
-        => Create((decimal)value, Currency.Default);
+        => Create((decimal)value);
 
     public static Amount Create(double value)
         => Create((decimal)value);
 
-    public static Amount Create(int value, Currency currency)
-        => Create((decimal)value, currency);
-
-    public static Amount Create(double value, Currency currency)
-        => Create((decimal)value, currency);
-
+   
     public override string ToString()
-        => CurrencyFormatter.FormatCurrency(Currency, _value ?? 0, 2);
+        => (_value ?? 0).ToString();
 
     public static Amount Parse(string s)
         => Parse(s, null);
@@ -69,27 +59,12 @@ public partial record struct Amount : IValueObject<Amount>
             return true;
         }
 
-        // Split the input string to separate the currency symbol and value
-        string[] parts = s.Split(' ', 2, StringSplitOptions.RemoveEmptyEntries);
-
-        if (parts.Length == 2)
+        if (decimal.TryParse(s, NumberStyles.Any, provider, out decimal value))
         {
-            // Attempt to parse the value part
-            if (decimal.TryParse(parts[1], NumberStyles.Any, provider, out decimal value))
-            {
-                // Determine the currency based on the symbol
-                Currency currency = parts[0] switch
-                {
-                    "€" => Currency.Euro,
-                    "$" => Currency.Dollar,
-                    _ => Currency.Default // Default to the default currency if the symbol is not recognized
-                };
-
-                result = new Amount(value, currency);
-                return true;
-            }
+            result = new Amount(value);
+            return true;
         }
-
+        
         result = Unknown;
 
         return false;
@@ -109,6 +84,7 @@ public partial record struct Amount :
     IUnaryPlusOperators<Amount, Amount>,
     IUnaryNegationOperators<Amount, Amount>,
     IAdditionOperators<Amount, Amount, Amount>,
+    IAdditionOperators<Amount, Currency, Money>,
     ISubtractionOperators<Amount, Amount, Amount>,
     IMultiplyOperators<Amount, decimal, Amount>,
     IMultiplyOperators<Amount, int, Amount>,
@@ -119,115 +95,102 @@ public partial record struct Amount :
     IDivisionOperators<Amount, int, Amount>
 {
     public static Amount operator +(Amount value)
-        => new(+value._value, value.Currency);
+        => new(+value._value);
     public static Amount operator -(Amount value)
-       => new(-value._value, value.Currency);
+       => new(-value._value);
 
     public static Amount operator +(Amount left, Amount right)
-    {
-        if(left.Currency == right.Currency)
-        {
-            return new Amount(left._value + right._value, left.Currency);
-        }
-
-        throw new InvalidOperationException("Currencies are not equal.");
-    }
+        => new Amount(left._value + right._value);
 
     public static Amount operator -(Amount left, Amount right)
-    {
-        if (left.Currency != right.Currency)
-        {
-            throw new InvalidOperationException("Currencies are not equal.");
-        }
-
-        return new Amount(left._value - right._value, left.Currency);
-    }
+        => new Amount(left._value - right._value);
 
     public static Amount operator ++(Amount value)
-        => new(value._value++, value.Currency);
+        => new(value._value++);
 
     public static Amount operator --(Amount value)
-        => new(value._value--, value.Currency);
+        => new(value._value--);
 
     public static Amount operator *(Amount left, decimal right)
-        => new(left._value * right, left.Currency);
+        => new(left._value * right);
 
     public static Amount operator /(Amount left, decimal right)
-        => new (left._value / right, left.Currency);
+        => new (left._value / right);
 
     public static Amount operator *(Amount left, Percentage right)
-        => new (left._value * (decimal)right, left.Currency);
+        => new (left._value * (decimal)right);
 
     public static bool operator >(Amount left, Amount right)
-    {
-        if (left.Currency != right.Currency)
-        {
-            throw new InvalidOperationException("Currencies are not equal.");
-        }
-
-        return left._value > right._value;
-    }
+        => left._value > right._value;
 
     public static bool operator >=(Amount left, Amount right)
-    {
-        if (left.Currency != right.Currency)
-        {
-            throw new InvalidOperationException("Currencies are not equal.");
-        }
-
-        return right._value >= left._value;
-    }
+        => right._value >= left._value;
 
     public static bool operator <(Amount left, Amount right)
-    {
-        if (left.Currency != right.Currency)
-        {
-            throw new InvalidOperationException("Currencies are not equal.");
-        }
-
-        return left._value < right._value;
-    }
+        => left._value < right._value;
 
     public static bool operator <=(Amount left, Amount right)
-    {
-        if (left.Currency != right.Currency)
-        {
-            throw new InvalidOperationException("Currencies are not equal.");
-        }
-
-        return left._value <= right._value;
-    }
+        => left._value <= right._value;
 
     public static Amount operator %(Amount left, decimal right)
-        => new(left._value % right, left.Currency);
+        => new(left._value % right);
 
     public static Amount operator *(Amount left, double right)
-        => new(left._value * (decimal)right, left.Currency);
+        => new(left._value * (decimal)right);
 
     public static Amount operator /(Amount left, double right)
-        => new(left._value / (decimal)right, left.Currency);
+        => new(left._value / (decimal)right);
 
     public static Amount operator *(Amount left, int right)
-        => new(left._value * right, left.Currency);
+        => new(left._value * right);
 
     public static Amount operator /(Amount left, int right)
-        => new(left._value / right, left.Currency);
+        => new(left._value / right);
+
+    public static Money operator +(Amount left, Currency right)
+        => new(right, left);
 }
 
-public record Currency(string Symbol, string Code, string Unit)
-{
-    public static Currency Default { get; set; } = Currency.Euro;
-    public static Currency Euro => new("€", "EUR", "Euro");
-    public static Currency Dollar => new("$", "USD", "United States Dollar");
-}
 
-public class CurrencyFormatter
+public static class AmountLinqExtensions
 {
-    public static string FormatCurrency(Currency currency, decimal amount, int decPlaces)
+    public static Amount Sum(this IEnumerable<Amount> source) 
     {
-        NumberFormatInfo localFormat = (NumberFormatInfo)NumberFormatInfo.CurrentInfo.Clone();
-        localFormat.CurrencySymbol = currency.Symbol;
-        localFormat.CurrencyDecimalDigits = decPlaces;
-        return amount.ToString("c", localFormat);
+        return source.Aggregate((left, right) => left + right);
+    }
+
+    public static IEnumerable<Money> Sum(this IEnumerable<Money> source)
+    {
+        var currencies = source.GroupBy(x => x.Currency);
+        var results = source.GroupBy(x => x.Currency)
+            .Select(x => new Money(x.Key, x.Sum(y => y.Amount)));
+        return results;
+    }
+
+    public static Money Sum(this IEnumerable<Money> source, Currency currency)
+    {
+        var results = source.Where(x => x.Currency == currency)
+            .Select(x => x.Amount).Sum();
+        return new(currency, results);
+    }
+
+    public static Amount Sum<T>(this IEnumerable<T> source, Func<T, Amount> selector)
+        => Sum(source.Select(selector));
+
+    public static IEnumerable<Money> Sum<T>(this IEnumerable<T> source, Func<T, Money> selector)
+    {
+        var results = source.Select(selector).GroupBy(x=>x.Currency)
+            .Select(x=> new Money(x.Key, x.Sum(y => y.Amount)));
+        return results;
+    }
+
+    public static Money Sum<T>(this IEnumerable<T> source, Func<T, Money> selector, Currency currency)
+    {
+        var results = source
+            .Select(selector)
+            .Where(x => x.Currency == currency)
+            .Select(x=>x.Amount).Sum();
+
+        return new Money(currency, results);
     }
 }
