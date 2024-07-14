@@ -1,5 +1,4 @@
 using Common.ValueObjects;
-using System.ComponentModel;
 
 namespace Hypotheken.Domain;
 public class Hypotheek
@@ -9,7 +8,7 @@ public class Hypotheek
     public Lening Lening { get; set; } = Lening.Empty();
     public Onderpand Onderpand { get; set; } = OnderpandFactory.GeenWaarde();
     public Hypotheekkosten Kosten { get; } = Hypotheekkosten.Create();
-    public Percentage Lti => (decimal)Lening.Totaal / (decimal)Hypotheekgever.JaarInkomen;
+    public Percentage Lti => LoanToIncome.Get(Lening, Hypotheekgever.JaarInkomen);
+    public Amount MaxHypotheek => MaximaleHypotheek.Calculate(Hypotheekgever.JaarInkomen, Percentage.Create(4.5m), 30);
+
 }
-
-
