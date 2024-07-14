@@ -123,15 +123,29 @@ public class UnitTest1
         var results = Termijnen.Create(leningdeel);
 
         var kapitaal = Kapitaal.Create(leningdeel);
+    }
 
-        var maxhyp = MaximaleHypotheek.Calculate(70_000, Percentage.Create(4), 360);
+    [Fact]
+    public void MAxHypTests()
+    {
+        var maxhyp = MaximaleHypotheek.Calculate(61_000, Percentage.Create(4.28m), 30);
 
-        var woonquoute = WoonQuotes.GetWoonquote(2024, 70000);
-        Amount hypotheeklast = Amount.Create(70000) * woonquoute;
+        var jaarinkomen = 61_000;
+        var hypotheekRente = 4.28m / 100;
+        var woonlastenPercentage = 26.5m / 100;
 
 
-        var max = ((1347 * 12) * (0.045)) * 30;
+        var maximaleWoonlastenPerJaar = jaarinkomen * woonlastenPercentage;
 
-        var test = maxhyp + Currency.Euro;
+        var maxhyp2 = (maximaleWoonlastenPerJaar / hypotheekRente);
+
+        var interest = hypotheekRente / 12;
+        var groeigetal = (decimal)Math.Pow((1 + (double)interest), 12 * 10);
+        var annuiteit = maximaleWoonlastenPerJaar / 12;
+        var deelfactor = (interest * groeigetal) / groeigetal;
+
+        var maxhyp1 = annuiteit / deelfactor;
+
+
     }
 } 
