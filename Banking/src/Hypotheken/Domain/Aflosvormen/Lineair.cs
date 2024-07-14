@@ -11,4 +11,7 @@ public sealed class Lineair : Aflosvorm
     {
         return leningdeel.Hoofdsom / leningdeel.Looptijd;
     }
+
+    public Amount GetKapitaal(Leningdeel leningdeel, Amount rente, int termijn)
+        =>0;
 }

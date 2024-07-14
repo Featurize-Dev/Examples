@@ -10,4 +10,7 @@ public sealed class Leven : Aflosvorm
     {
         throw new NotImplementedException();
     }
+
+    public Amount GetKapitaal(Leningdeel leningdeel, Amount rente, int termijn)
+        => 0;
 }

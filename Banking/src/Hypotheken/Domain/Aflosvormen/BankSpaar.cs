@@ -7,15 +7,17 @@ public sealed class BankSpaar(Percentage spaarRente) : Aflosvorm
         => Percentage.Create(10);
 
     public Percentage SpaarRente { get; } = spaarRente;
-
+    
     public Amount GetAflossing(Leningdeel leningdeel, Amount rente, int termijn)
-    {
-        var hoofdsom = (double)leningdeel.Hoofdsom;
-        var maandSpaarRente = (double)SpaarRente / 12;
-        double factor = Math.Pow(1 + (double)maandSpaarRente, termijn);
-        
-        double maandelijkseInleg = (hoofdsom * maandSpaarRente) / (factor - 1);
+        => 0m;
 
-        return Amount.Create(maandelijkseInleg, leningdeel.Hoofdsom.Currency);
+    public Amount GetKapitaal(Leningdeel leningdeel, Amount rente, int termijn)
+    {
+        double hoofdsom = (double)leningdeel.Hoofdsom;
+        double maandRenteSpaar = (double)SpaarRente / 12;
+        double factor = Math.Pow(1 + maandRenteSpaar, leningdeel.Looptijd);
+        double maandelijkseInleg = (hoofdsom * maandRenteSpaar) / (factor - 1);
+
+        return Amount.Create(maandelijkseInleg);
     }
 }

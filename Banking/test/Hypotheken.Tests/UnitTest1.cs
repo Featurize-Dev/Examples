@@ -2,6 +2,9 @@ using Common;
 using Common.ValueObjects;
 using FluentAssertions;
 using Hypotheken.Domain;
+using Hypotheken.Domain.Aflosvormen;
+using Hypotheken.Domain.HypotheekGevers;
+using Microsoft.AspNetCore.Builder;
 using System.ComponentModel.DataAnnotations;
 
 namespace Hypotheken.Tests;
@@ -13,14 +16,14 @@ public class UnitTest1
     {
         var akte = new Hypotheek();
 
-        akte.Hypotheekgevers.Add(new Hypotheekgever()
+        akte.Hypotheekgever = new NatuurlijkPersoon()
         {
             Voornaam = "Patrick",
             Achternaam = "Evers",
             Tussenvoegsel = string.Empty,
             BurgerServiceNummer = BSN.Parse("128.328.559"),
             Geboortedatum = DateOnly.Parse("1978-10-09"),
-        });
+        };
 
         var rvp = RenteVastePeriode.Create(1.04m, 120);
 
@@ -33,7 +36,13 @@ public class UnitTest1
         var hmm = Percentage.Parse("1%");
 
         pTest1.Equals(pTest);
-        
+
+
+        Percentage res = Percentage.Parse("16%") / Percentage.Parse("8%");
+
+
+        res.Should().Be(Percentage.Parse("200%"));
+
         //akte.Lening.Leningdelen.Add(leningdeel);
     }
 
@@ -77,11 +86,7 @@ public class UnitTest1
         
         var hypotheek = new Hypotheek()
         {
-            Hypotheekgevers = [
-                new Hypotheekgever() {
-                        
-                    }
-                ],
+            Hypotheekgever = Hypotheekgever.NatuurlijkPersoon(),
             Hypotheeknemer = Hypotheeknemer.GoldCreditBank,
             Lening = lening,
             Onderpand = OnderpandFactory.Eengezinswoning(Energielabel.F, 250_000)
@@ -101,5 +106,32 @@ public class UnitTest1
         var boete = (decimal)BoeteRente.Oversluiten(leningdeel, new_rvp, DateOnly.FromDateTime(date));
 
         boete.Should().BeApproximately(5400, 1);
+    }
+
+    [Fact]
+    public void BankSpaar_Berekening()
+    {
+        var rvp = RenteVastePeriode.Create(3, 120);
+        var leningdeel = LeningdeelBuilder.Create()
+            .WithStartDatum(new(2024,1,1))
+            .WithAflosvorm(new BankSpaar(3))
+            .WithLooptijd(360)
+            .WithRenteVastePeriode(rvp)
+            .WithHoofdsom(250_000)
+            .Build();
+
+        var results = Termijnen.Create(leningdeel);
+
+        var kapitaal = Kapitaal.Create(leningdeel);
+
+        var maxhyp = MaximaleHypotheek.Calculate(70_000, Percentage.Create(4), 360);
+
+        var woonquoute = WoonQuotes.GetWoonquote(2024, 70000);
+        Amount hypotheeklast = Amount.Create(70000) * woonquoute;
+
+
+        var max = ((1347 * 12) * (0.045)) * 30;
+
+        var test = maxhyp + Currency.Euro;
     }
 } 

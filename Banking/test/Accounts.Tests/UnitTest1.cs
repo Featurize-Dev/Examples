@@ -18,3 +18,12 @@ public class Tests
         Assert.That(bc != BankAccountNumber.Unknown);
     }
 }
+
+
+public class IBanParser
+{
+    public Dictionary<string, string> GetParts(string iban)
+    {
+        return new Dictionary<string, string>();
+    }
+}

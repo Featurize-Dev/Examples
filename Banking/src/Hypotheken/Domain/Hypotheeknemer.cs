@@ -1,4 +1,5 @@
-﻿using Featurize.ValueObjects;
+﻿using Common.ValueObjects;
+using Featurize.ValueObjects;
 
 namespace Hypotheken.Domain;
 

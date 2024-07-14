@@ -16,4 +16,6 @@ public sealed class Annuitair : Aflosvorm
 
         return (decimal)annuiteit - rente;
     }
+    public Amount GetKapitaal(Leningdeel leningdeel, Amount rente, int termijn)
+        => 0;
 }

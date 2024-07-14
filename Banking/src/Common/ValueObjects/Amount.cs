@@ -27,6 +27,8 @@ public partial record struct Amount : IValueObject<Amount>
     public static Amount Zero => new(0);
 
     public static Amount One => new(1);
+    public static Amount Max => new(decimal.MaxValue);
+    public static Amount Min => new(decimal.MinValue);
 
     public static Amount Create(decimal value)
         => new(value);
@@ -92,7 +94,8 @@ public partial record struct Amount :
     IMultiplyOperators<Amount, Percentage, Amount>,
     IDivisionOperators<Amount, decimal, Amount>,
     IDivisionOperators<Amount, double, Amount>,
-    IDivisionOperators<Amount, int, Amount>
+    IDivisionOperators<Amount, int, Amount>,
+    IDivisionOperators<Amount, Percentage, Amount>
 {
     public static Amount operator +(Amount value)
         => new(+value._value);
@@ -149,6 +152,9 @@ public partial record struct Amount :
 
     public static Money operator +(Amount left, Currency right)
         => new(right, left);
+
+    public static Amount operator /(Amount left, Percentage right)
+        => new(left._value / (decimal)right);
 }
 
 

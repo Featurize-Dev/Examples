@@ -1,13 +1,18 @@
 ﻿using Common.ValueObjects;
+using Hypotheken.Domain.HypotheekGevers;
 
 namespace Hypotheken.Domain;
 
-public class Hypotheekgever
+public abstract class Hypotheekgever
 {
-    public string Voornaam { get; set; } = string.Empty;
-    public string Tussenvoegsel { get; set; } = string.Empty;
-    public string Achternaam { get; set; } = string.Empty;
-    public DateOnly Geboortedatum { get; set; }
-    public BSN BurgerServiceNummer { get;set; }
+    public static Hypotheekgever Empty()
+        => new Samengesteld();
 
+    public static Hypotheekgever NatuurlijkPersoon() 
+        => new NatuurlijkPersoon();
+
+    public static Hypotheekgever Rechtspersoon()
+        => new Rechtspersoon();
+
+    public abstract Amount JaarInkomen { get; }
 }

@@ -10,4 +10,6 @@ public sealed class Hybride : Aflosvorm
     {
         throw new NotImplementedException();
     }
+    public Amount GetKapitaal(Leningdeel leningdeel, Amount rente, int termijn)
+        => 0;
 }

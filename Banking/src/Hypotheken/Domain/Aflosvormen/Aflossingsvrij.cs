@@ -11,4 +11,6 @@ public sealed class Aflossingsvrij(decimal MaandelijkseAflossing) : Aflosvorm
     {
         return MaandelijkseAflossing;
     }
+    public Amount GetKapitaal(Leningdeel leningdeel, Amount rente, int termijn)
+        => 0;
 }
