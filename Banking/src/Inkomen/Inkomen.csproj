@@ -12,13 +12,4 @@
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Common\Common.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Features\Commands\" />
-    <Folder Include="Features\Queries\" />
-  </ItemGroup>
-
 </Project>

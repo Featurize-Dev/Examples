@@ -4,25 +4,26 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+	  <IsAspireSharedProject>true</IsAspireSharedProject>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Featurize.AspNetCore" Version="1.4.0" />
-    <PackageReference Include="Featurize.DomainModel" Version="0.1.0" />
-    <PackageReference Include="Featurize.Repositories" Version="0.7.0" />
-    <PackageReference Include="Featurize.Repositories.InMemory" Version="0.7.0" />
-    <PackageReference Include="Featurize.ValueObjects" Version="0.1.0" />
-    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.6" />
-    <PackageReference Include="Microsoft.Extensions.Http.Resilience" Version="8.6.0" />
-    <PackageReference Include="Microsoft.Extensions.ServiceDiscovery" Version="8.0.1" />
-    <PackageReference Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.9.0" />
-    <PackageReference Include="OpenTelemetry.Extensions.Hosting" Version="1.9.0" />
-    <PackageReference Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.9.0" />
-    <PackageReference Include="OpenTelemetry.Instrumentation.GrpcNetClient" Version="1.7.0-beta.1" />
-    <PackageReference Include="OpenTelemetry.Instrumentation.Http" Version="1.9.0" />
-    <PackageReference Include="OpenTelemetry.Instrumentation.Runtime" Version="1.9.0" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
-    <PackageReference Include="System.Linq.Async.Queryable" Version="6.0.1" />
+    <PackageReference Include="Featurize.AspNetCore" />
+    <PackageReference Include="Featurize.DomainModel"  />
+    <PackageReference Include="Featurize.Repositories"  />
+    <PackageReference Include="Featurize.Repositories.InMemory" />
+    <PackageReference Include="Featurize.ValueObjects"  />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi"/>
+    <PackageReference Include="Microsoft.Extensions.Http.Resilience"  />
+    <PackageReference Include="Microsoft.Extensions.ServiceDiscovery"  />
+    <PackageReference Include="OpenTelemetry.Exporter.OpenTelemetryProtocol"  />
+    <PackageReference Include="OpenTelemetry.Extensions.Hosting"  />
+    <PackageReference Include="OpenTelemetry.Instrumentation.AspNetCore"  />
+    <PackageReference Include="OpenTelemetry.Instrumentation.GrpcNetClient"  />
+    <PackageReference Include="OpenTelemetry.Instrumentation.Http" />
+    <PackageReference Include="OpenTelemetry.Instrumentation.Runtime"  />
+    <PackageReference Include="Swashbuckle.AspNetCore" />
+    <PackageReference Include="System.Linq.Async.Queryable" />
   </ItemGroup>
 
 </Project>

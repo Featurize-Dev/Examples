@@ -6,12 +6,12 @@ namespace WebApp.Features.App;
 public class AppState : INotifyPropertyChanged
 {
     public event PropertyChangedEventHandler? PropertyChanged;
-    protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+    protected void OnPropertyChanged([CallerMemberName] string propertyName = "")
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 
-    private string _caption;
+    private string _caption = string.Empty;
 
     public string Caption
     {

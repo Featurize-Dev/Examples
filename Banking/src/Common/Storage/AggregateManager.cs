@@ -6,7 +6,7 @@ using System.Text.Json;
 namespace Common.Storage;
 
 public class AggregateManager<TAggregate, TId>
-    where TAggregate : AggregateRoot<TAggregate, TId>
+    where TAggregate : AggregateRoot<TId>
     where TId : struct, IEquatable<TId>
 {
     private const string _applyMethodName = "Apply";
@@ -31,10 +31,9 @@ public class AggregateManager<TAggregate, TId>
             return null;
         }
 
-        var aggregate = AggregateRoot.Create<TAggregate, TId>(id);
         var eventCollection = EventCollection.Create(id, events);
-        aggregate.LoadFromHistory(eventCollection);
-        return aggregate;
+
+        return AggregateRoot.LoadFromHistory<TAggregate, TId>(eventCollection);
     }
 
     public async Task SaveAsync(TAggregate aggregate)

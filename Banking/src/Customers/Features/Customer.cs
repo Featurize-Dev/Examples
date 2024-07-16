@@ -5,7 +5,7 @@ using Featurize.ValueObjects;
 
 namespace Customers.Features;
 
-public class Customer : AggregateRoot<Customer, CustomerId>
+public class Customer : AggregateRoot<CustomerId>
 {
     public static Customer Create(string firstname, string surname, Address address, PhoneNumber phone, EmailAddress emailAddress)
     {

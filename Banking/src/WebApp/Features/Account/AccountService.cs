@@ -9,6 +9,6 @@ public class AccountService(HttpClient httpClient)
     public async Task<AccountModel> GetAccountAsync()
     {
         var result = await HttpClient.GetFromJsonAsync<AccountModel>("{id}");
-        return result;
+        return result ?? new AccountModel();
     }
 }

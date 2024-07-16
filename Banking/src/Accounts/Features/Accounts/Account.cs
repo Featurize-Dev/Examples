@@ -4,7 +4,7 @@ using GBC.Accounts.Features.Accounts.ValueObjects;
 namespace GBC.Accounts.Features.Accounts;
 
 
-public class Account : AggregateRoot<Account, BankAccountNumber>
+public class Account : AggregateRoot<BankAccountNumber>
 {
     public Amount Balance { get; private set; }
     public Amount Reserved { get; private set; }
